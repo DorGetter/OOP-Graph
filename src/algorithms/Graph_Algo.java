@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import dataStructure.Edge;
 import dataStructure.edge_data;
 import dataStructure.graph;
 import dataStructure.node_data;
+import elements.Edge;
 /**
  * This empty class represents the set of graph-theory algorithms
  * which should be implemented as part of Ex2 - Do edit this class.

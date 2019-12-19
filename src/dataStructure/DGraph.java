@@ -7,7 +7,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
-import dataStructure.NodeV;
+import elements.Edge;
+import elements.NodeV;
 
 public class DGraph implements graph{
 

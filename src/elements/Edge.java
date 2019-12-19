@@ -1,4 +1,7 @@
-package dataStructure;
+package elements;
+
+import dataStructure.edge_data;
+import dataStructure.node_data;
 
 public class Edge implements edge_data{
 	

@@ -1,5 +1,6 @@
-package dataStructure;
+package elements;
 
+import dataStructure.node_data;
 import utils.Point3D;
 
 public class NodeV implements node_data {
