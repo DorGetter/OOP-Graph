@@ -10,21 +10,28 @@ public class NodeV implements node_data {
     //////////////    fields     ///////////////
     ////////////////////////////////////////////
 	static int id =0;
+	int my_id =0;
 	Point3D point;
 	int weight=0;
 	int tag = 0; 
     /////////////////////////////////////////////////////////////////
     ///////////////////     Constructor     /////////////////////////
     /////////////////////////////////////////////////////////////////
+	public NodeV(int x , int y) {
+		this.point = new Point3D(x,y);
+		my_id =id++;
+		
+	}
+	
 	public NodeV(int x , int y , int z) {
 		this.point = new Point3D(x,y,z);
-		id++;
+		my_id =id++;
 	}
 	public NodeV(Point3D point) {
 		this.point=new Point3D(point);
-		id++;
+		my_id =id++;
 	}
-	public NodeV() {id++;}
+	public NodeV() {my_id =id++;}
 	
     ///////////////////////////////////////////////////////////////////////////
     ////////////////////////////       methods        /////////////////////////
@@ -33,8 +40,7 @@ public class NodeV implements node_data {
 	@Override
 	public int getKey() {
 		
-		
-		return this.id;
+		return this.my_id;
 	}
 
 	@Override
