@@ -126,7 +126,7 @@ public class Graph_Algo implements graph_algorithms{
 	}
 
 	private ArrayList<node_data> Dijkstra(int src, int dest){
-
+		
 		Collection<node_data> vertex = g.getV();
 		all_white(vertex);
 		all_inf(vertex);
@@ -136,6 +136,9 @@ public class Graph_Algo implements graph_algorithms{
 		int counter=0;
 		MinHeap heap = new MinHeap();
 		heap.add((NodeV) a, 0, a.getKey());
+		if(src == dest) {
+			return createpath(dest);
+		}
 		
 		while(counter != vertex.size() && !heap.isEmpty()) {
 				NodeV pop = heap.pop();
@@ -176,7 +179,13 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public double shortestPathDist(int src, int dest) {	
-		return Dijkstra(src, dest).size();
+		
+		List<node_data> temp = Dijkstra(src, dest);
+		if(temp == null ) {
+			return -1;
+		}
+		
+		return temp.get(temp.size()-1).getWeight();
 	}
 
 	@Override
@@ -184,11 +193,14 @@ public class Graph_Algo implements graph_algorithms{
 		return Dijkstra(src, dest);
 	}
 
+	
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
+	
+	
 
 	@Override
 	public graph copy() {

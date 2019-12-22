@@ -18,36 +18,44 @@ public class checkGUI {
 
 	public static void main(String[] args) {
 		DGraph g = new DGraph();
-		//		
-		//		
-		//		g.addNode(new NodeV(12,10));
-		//		g.addNode(new NodeV(22,18));
-		//		g.addNode(new NodeV(5,25));
-		//		g.addNode(new NodeV(11,35));
-		//		g.addNode(new NodeV(8,14));
-		//		
-		//		Collection vertex = g.getV();
-		//		Iterator hit = vertex.iterator();
-		//		
-		//		while(hit.hasNext()) {
-		//			NodeV temp = (NodeV) hit.next();
-		//			System.out.println(temp.getKey());
-		//		}
-		//		
-		//		g.connect(0, 1, 1);
-		//		g.connect(1, 2, 3);
-		//		g.connect(2, 3, 4);
-		//		g.connect(3, 2, 1);
-		//		g.connect(1, 3, 1);
-		//		g.connect(3, 4, 6);
-		//		g.connect(4, 0, 6);
-		//		Graph_Algo ga = new Graph_Algo();
-		//		ga.init(g);
-		//		System.out.println(ga.isConnected());
-		//		
-		//		Graph_GUI wind = new Graph_GUI(g);
-		//		
-		//		wind.setVisible(true);
+				
+				
+				g.addNode(new NodeV(12,10));
+				g.addNode(new NodeV(22,18));
+				g.addNode(new NodeV(5,25));
+				g.addNode(new NodeV(11,35));
+				g.addNode(new NodeV(8,14));
+				
+				Collection vertex = g.getV();
+				Iterator hit = vertex.iterator();
+				
+				while(hit.hasNext()) {
+					NodeV temp = (NodeV) hit.next();
+					System.out.println(temp.getKey());
+				}
+				
+				g.connect(0, 1, 1);
+				g.connect(1, 2, 3);
+				g.connect(2, 3, 4);
+				g.connect(3, 2, 1);
+				g.connect(1, 3, 1);
+				g.connect(3, 4, 6);
+				g.connect(4, 0, 6);
+				Graph_Algo ga = new Graph_Algo();
+				ga.init(g);
+				System.out.println(ga.isConnected());
+				
+				Graph_GUI wind = new Graph_GUI(g);
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				wind.setVisible(true);
 		NodeV a = new NodeV();
 		NodeV b = new NodeV();
 		NodeV c = new NodeV();
@@ -56,6 +64,7 @@ public class checkGUI {
 		NodeV f = new NodeV();
 		NodeV w = new NodeV();
 		NodeV h = new NodeV();
+		NodeV q = new NodeV();
 		a.setWeight(12);
 		b.setWeight(12);
 		c.setWeight(12);
@@ -73,6 +82,7 @@ public class checkGUI {
 		g.addNode(f);
 		g.addNode(w);
 		g.addNode(h);
+		g.addNode(q);
 
 		g.connect(a.getKey(), b.getKey(), 2);
 
@@ -89,14 +99,9 @@ public class checkGUI {
 		g.connect(w.getKey(), h.getKey(),12);
 		Graph_Algo gr = new Graph_Algo();
 		gr.init(g);
-		System.out.println(gr.shortestPathDist(a.getKey(), h.getKey()));
-		List<node_data> path = gr.shortestPath(a.getKey(), h.getKey());
-
-
-		for (int i = 0; i < path.size(); i++) {
-			System.out.print(path.get(i).getKey()+">>>");
-		}
-
+		System.out.println(gr.shortestPathDist(a.getKey(), q.getKey()));
+		List<node_data> path = gr.shortestPath(a.getKey(), q.getKey());
+		
 
 
 
