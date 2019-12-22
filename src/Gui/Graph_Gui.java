@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,6 +21,7 @@ import dataStructure.DGraph;
 import dataStructure.edge_data;
 import dataStructure.node_data;
 import elements.NodeV;
+import utils.Point3D;
 
 
 
@@ -27,22 +29,22 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 
 	//holds the vertex points.\\ 
 	//ArrayList<NodeV> p_list = new ArrayList<NodeV>(); 
-	HashMap<Integer,node_data> vertex;
+	private Collection<node_data> vertex;
 
 	// contains all the edges by ID(src ver) and edge_data. 
-	HashMap<Integer, edge_data> edges;
-
+	private Collection<edge_data> edges;
 	private DGraph Graph;
 
 
 	public Graph_GUI(DGraph dg)
 	{
 		initGUI();
-		this.vertex	= (HashMap<Integer, node_data>)dg.getV();
+		this.vertex	= dg.getV();
 		this.Graph = dg;
 	}
 
 	private void initGUI() {
+		this.setLocationByPlatform(true);
 		this.setSize(1000,1000);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -73,46 +75,41 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 	{
 		//call paint func\\
 		super.paint(g);
-
-		Set setMapKey = vertex.keySet();
-		Iterator hit = setMapKey.iterator();
+	
+		
+		Iterator hit = vertex.iterator();
 
 		while(hit.hasNext()) {
 			//creating the vertex\\ 
-			int v = (int) hit.next(); 
+			node_data v = (node_data) hit.next(); 
 			g.setColor(Color.BLUE);
-			g.fillOval(Graph.getNode(v).getLocation().ix() , Graph.getNode(v).getLocation().iy(), 10 , 10);	
+			g.fillOval(Graph.getNode(v.getKey()).getLocation().ix(),Graph.getNode(v.getKey()).getLocation().iy(), 40 , 40);	
 
 			//creating edges to the vertex\\ 
-			edges = (HashMap<Integer, edge_data>) Graph.getE(v);
+			edges = Graph.getE(v.getKey());
 			if(edges == null) {continue;}
 
-
-
-
 			//go over the edges that come out of the specific vertex\\ 
-			Set setMapKey2 = edges.keySet();
-			Iterator hit2 = setMapKey.iterator();
+			Iterator hit2 = edges.iterator();
 
 			while(hit2.hasNext()) {
 				g.setColor(Color.red);
-				int dest = (int) hit2.next();
+				edge_data dest = (edge_data) hit2.next();
 				//From\\
-				int x1 = Graph.getNode(v).getLocation().ix();
-				int y1 = Graph.getNode(v).getLocation().iy();
+				int x1 = Graph.getNode(v.getKey()).getLocation().ix();
+				int y1 = Graph.getNode(v.getKey()).getLocation().iy();
 				//To\\
-				int x2 = Graph.getNode(dest).getLocation().ix();
-				int y2 = Graph.getNode(dest).getLocation().iy();
+				int x2 = Graph.getNode(dest.getDest()).getLocation().ix();
+				int y2 = Graph.getNode(dest.getDest()).getLocation().iy();
 
 				//draw the line between the vertexes\\ 
 				g.drawLine(x1, y1,x2,y2);
-
 
 				//Draw the circle indicates the direction of the edge,
 				//by mark a oval in the 3/4 the line next to the dest vertex. 
 				g.drawOval(((x1*1)/4)+((x2*3)/4),((y1*1)/4)+((y2*3)/4) , 3, 3);
 
-				double w = Graph.getNode(v).getWeight();
+				double w = Graph.getNode(v.getKey()).getWeight();
 				g.setColor(Color.MAGENTA);
 				g.drawString(Double.toString(w),(x1+x2)/2,(y1+y2)/2);
 
@@ -141,7 +138,13 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		int x = e.getX();
+		int y = e.getY();
+		Point3D p = new Point3D(x,y);
+	
+		repaint();
+		System.out.println("mousePressed"+e.getX()+e.getY());
+		
 
 	}
 
@@ -158,11 +161,11 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 
 		if(action.contentEquals("Short Path"))
 		{
-			//create integration to the method.
+			System.out.println("svadh");
 		}
 		if(action.contentEquals("connect check"))
 		{
-			//create integration to the method.
+			
 		}
 		
 	}

@@ -77,17 +77,20 @@ public class DGraph implements graph{
 
 	@Override
 	public Collection<node_data> getV() {
-		return (Collection<node_data>) vertex;
+		Collection<node_data> v = vertex.values();
+		return (Collection<node_data>) v;
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
 
 		if(!edges.containsKey(node_id)) {
-			System.out.println("No such vertex in edges");
 			return null;
 		}
-		else {return (Collection<edge_data>) edges.get(node_id);}
+		else {
+			Collection<edge_data> e = edges.get(node_id).values();
+			return (Collection<edge_data>) e;
+			}
 	}
 
 	@Override
