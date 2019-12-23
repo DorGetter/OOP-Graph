@@ -18,6 +18,14 @@ public class NodeV implements node_data {
     /////////////////////////////////////////////////////////////////
     ///////////////////     Constructor     /////////////////////////
     /////////////////////////////////////////////////////////////////
+	public NodeV(int x , int y, double w) {
+		this.point = new Point3D(x,y);
+		this.weight = w;
+		my_id =id++;
+		
+	}
+	
+	
 	public NodeV(int x , int y) {
 		this.point = new Point3D(x,y);
 		my_id =id++;

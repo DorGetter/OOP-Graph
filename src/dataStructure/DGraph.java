@@ -15,7 +15,7 @@ public class DGraph implements graph{
 	// contains all the vertexes by ID and weight.
 	HashMap<Integer,node_data> vertex = new HashMap<Integer, node_data>();;
 	// contains all the edges by ID(src ver) and edge_data. 
-	HashMap<Integer, HashMap<Integer, edge_data>> edges = new HashMap<Integer, HashMap<Integer, edge_data>>();;
+	HashMap<Integer, HashMap<Integer, edge_data>> edges = new HashMap<Integer, HashMap<Integer, edge_data>>();
 	int id =0;
 	int mc =0;
 

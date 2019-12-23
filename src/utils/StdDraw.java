@@ -480,6 +480,7 @@ import javax.swing.KeyStroke;
  */
 public final class StdDraw implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
 
+	
 	/**
 	 *  The color black.
 	 */
@@ -718,10 +719,29 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		JMenu menu = new JMenu("File");
 		menuBar.add(menu);
 		JMenuItem menuItem1 = new JMenuItem(" Save...   ");
+		JMenuItem menuItem2 = new JMenuItem(" Load...   ");			 //<<<<<<<<<<<<<<DORS
+		JMenuItem menuItem3 = new JMenuItem(" Shortest Path...   "); //<<<<<<<<<<<<<<DORS
+		JMenuItem menuItem4 = new JMenuItem(" connect check...   ");
 		menuItem1.addActionListener(std);
-		menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+		menuItem2.addActionListener(std);
+		menuItem3.addActionListener(std);
+		menuItem4.addActionListener(std);
+		menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //save 
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+		menuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //load
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+		//	menuItem3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //short path <<
+		//			Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+		//		menuItem4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,	//connect  <<
+		//				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
 		menu.add(menuItem1);
+		menu.add(menuItem2);
+		menu.add(menuItem3);
+		menu.add(menuItem4);
 		return menuBar;
 	}
 
@@ -1597,6 +1617,13 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	}
 
 
+
+
+
+
+
+
+
 	/***************************************************************************
 	 *  Save drawing to a file.
 	 ***************************************************************************/
@@ -1648,17 +1675,31 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		}
 	}
 
-
+	
 	/**
 	 * This method cannot be called directly.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
-		chooser.setVisible(true);
-		String filename = chooser.getFile();
-		if (filename != null) {
-			StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
+		if(e.getActionCommand() == " Save...   ") {
+			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
+			chooser.setVisible(true);
+			String filename = chooser.getFile();
+			if (filename != null) {
+				StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
+			}
+		}
+		else if(e.getActionCommand() == " Load...   ") {
+			
+			std.text(10, 10, "loading");
+		}
+		else if(e.getActionCommand() == " Shortest Path...   ") {
+			
+			std.text(0, 0, "short_path: ");
+			
+		}
+		else if(e.getActionCommand() == " connect check...   ") {
+			std.text(30, 30, "connect_check");
 		}
 	}
 
@@ -1674,6 +1715,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 */
 	public static boolean isMousePressed() {
 		synchronized (mouseLock) {
+
+
 			return isMousePressed;
 		}
 	}
@@ -1687,6 +1730,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	@Deprecated
 	public static boolean mousePressed() {
 		synchronized (mouseLock) {
+			System.out.println("Mouse Pressed");
+
 			return isMousePressed;
 		}
 	}
@@ -1719,7 +1764,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// this body is intentionally left empty
+		System.out.println(e.getX()+"  "+e.getY());
 	}
 
 	/**
@@ -1727,7 +1772,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// this body is intentionally left empty
+		System.out.println("entered Screen");
 	}
 
 	/**
@@ -1735,7 +1780,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// this body is intentionally left empty
+		System.out.println("exit Screen");
 	}
 
 	/**
