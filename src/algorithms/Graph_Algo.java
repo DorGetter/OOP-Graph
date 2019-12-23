@@ -116,7 +116,7 @@ public class Graph_Algo implements graph_algorithms{
 			check.setTag(0);
 		}
 	}
-	
+
 	private void all_inf(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
 		while(tau.hasNext()) {
@@ -126,7 +126,7 @@ public class Graph_Algo implements graph_algorithms{
 	}
 
 	private ArrayList<node_data> Dijkstra(int src, int dest){
-		
+
 		Collection<node_data> vertex = g.getV();
 		all_white(vertex);
 		all_inf(vertex);
@@ -139,39 +139,39 @@ public class Graph_Algo implements graph_algorithms{
 		if(src == dest) {
 			return createpath(dest);
 		}
-		
+
 		while(counter != vertex.size() && !heap.isEmpty()) {
-				NodeV pop = heap.pop();
-				if(pop.getTag()==1) {continue;}
-				pop.setTag(1); // visited pop
-				
-				Collection<edge_data> e = g.getE(pop.getKey());		
-				if(e==null) {continue;}
-				Iterator<edge_data> edges =  e.iterator();
-				
-				while(edges.hasNext()) //adding all sons..
-				{
-					edge_data temp = edges.next();
-					heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey());
-				}
-				counter++;
+			NodeV pop = heap.pop();
+			if(pop.getTag()==1) {continue;}
+			pop.setTag(1); // visited pop
+
+			Collection<edge_data> e = g.getE(pop.getKey());		
+			if(e==null) {continue;}
+			Iterator<edge_data> edges =  e.iterator();
+
+			while(edges.hasNext()) //adding all sons..
+			{
+				edge_data temp = edges.next();
+				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey());
+			}
+			counter++;
 		}
-			
+
 		return createpath(dest);
 	}
 
 	private ArrayList<node_data> createpath(int dest) {
-		
+
 		if(g.getNode(dest).getWeight() == Double.MAX_VALUE) { return null;}
 		ArrayList<node_data> path = new ArrayList<node_data>();
-		
+
 		NodeV a = (NodeV) g.getNode(dest);
 		while(a.getPrev_Id() != a.getKey()) {
 			path.add(a);
 			int prev_id = a.getPrev_Id();
 			a = (NodeV) g.getNode(prev_id);
 		}
-		
+
 		path.add(a);
 		path = (ArrayList<node_data>) rev_collection(path.toArray());
 		return path;
@@ -179,12 +179,12 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public double shortestPathDist(int src, int dest) {	
-		
+
 		List<node_data> temp = Dijkstra(src, dest);
 		if(temp == null ) {
 			return -1;
 		}
-		
+
 		return temp.get(temp.size()-1).getWeight();
 	}
 
@@ -193,14 +193,58 @@ public class Graph_Algo implements graph_algorithms{
 		return Dijkstra(src, dest);
 	}
 
-	
+
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
 
-		return null;
+		HashMap<Integer, List<node_data>> keep_score = new HashMap<Integer, List<node_data>>();
+		Iterator hit = targets.iterator();
+		while(hit.hasNext()) {
+			Integer tar = (Integer) hit.next();
+
+			for (int i = 0; i < targets.size(); i++) {
+				if(i == tar) {continue;}
+
+				List<node_data> temp = Dijkstra(tar, i);
+				keep_score.put(tar, null);
+				int count =0;
+				for (int j = 0; j < targets.size(); j++) {
+					try {
+					if(temp.contains(g.getNode(targets.get(i)))) {
+						count++;
+					}}catch (NullPointerException e) {}
+				}
+				if(count != targets.size()) {continue;}
+				
+				if(keep_score.get(tar) == null) { 
+					keep_score.remove(tar);
+					keep_score.put(tar, temp);
+				}
+				else if(keep_score.get(tar).size() > temp.size()) {
+					keep_score.remove(tar);
+					keep_score.put(tar, temp);
+				}
+			}
+		}
+		
+		List<node_data> minimal_path = null;
+		List<node_data> test;
+		
+		Set setMapKey = keep_score.keySet();
+		Iterator f = setMapKey.iterator();
+		while (f.hasNext()) {
+			
+			try {
+			test = keep_score.get(f.next());
+			if(minimal_path == null) {minimal_path= test;}
+			else if(test.size() < minimal_path.size()){minimal_path= test;}
+			}catch (NullPointerException e) {}
+		}
+		
+		return minimal_path;
 	}
-	
-	
+
+
 
 	@Override
 	public graph copy() {
@@ -208,5 +252,5 @@ public class Graph_Algo implements graph_algorithms{
 		return null;
 	}
 
-	
+
 }
