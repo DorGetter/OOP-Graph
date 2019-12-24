@@ -141,6 +141,7 @@ public class Graph_Algo implements graph_algorithms{
 		}
 
 		while(counter != vertex.size() && !heap.isEmpty()) {
+			System.out.println("loop1");
 			NodeV pop = heap.pop();
 			if(pop.getTag()==1) {continue;}
 			pop.setTag(1); // visited pop
@@ -151,6 +152,7 @@ public class Graph_Algo implements graph_algorithms{
 
 			while(edges.hasNext()) //adding all sons..
 			{
+				System.out.println("loop2");
 				edge_data temp = edges.next();
 				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey());
 			}

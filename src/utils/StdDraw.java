@@ -34,10 +34,11 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.List;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -55,13 +56,15 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DirectColorModel;
 import java.awt.image.WritableRaster;
-
+import java.util.*;
 import java.io.File;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.text.DecimalFormat;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 import java.util.NoSuchElementException;
@@ -73,7 +76,18 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.RepaintManager;
+
+import GuiDraw.checkGUI_stdDraw;
+import algorithms.Graph_Algo;
+import algorithms.graph_algorithms;
+import dataStructure.DGraph;
+import dataStructure.edge_data;
+import dataStructure.graph;
+import dataStructure.node_data;
+import elements.NodeV;
 
 /**
  *  The {@code StdDraw} class provides a basic capability for
@@ -480,7 +494,7 @@ import javax.swing.KeyStroke;
  */
 public final class StdDraw implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
 
-	
+
 	/**
 	 *  The color black.
 	 */
@@ -1675,12 +1689,16 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		}
 	}
 
-	
+
 	/**
 	 * This method cannot be called directly.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		///////////////////////////////////////////////
+		/////////////Saving Command\\\\\\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
 		if(e.getActionCommand() == " Save...   ") {
 			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
 			chooser.setVisible(true);
@@ -1689,20 +1707,101 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
 			}
 		}
+		///////////////////////////////////////////////
+		/////////////Load Command\\\\\\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
 		else if(e.getActionCommand() == " Load...   ") {
-			
-			std.text(10, 10, "loading");
+			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.LOAD);
+			chooser.setVisible(true);
+			String filename = chooser.getFile();
+
 		}
+
+		///////////////////////////////////////////////
+		/////////////ShortPath Command\\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
 		else if(e.getActionCommand() == " Shortest Path...   ") {
-			
-			std.text(0, 0, "short_path: ");
-			
+			JFrame f = null; 
+			String src = JOptionPane.showInputDialog(f,"Enter Src");
+			String dest = JOptionPane.showInputDialog(f,"Enter Dest");
+
+			graph_algorithms a = new Graph_Algo();
+			a.init(Graph);
+			java.util.List<node_data> path =a.shortestPath(Integer.parseInt(src), Integer.parseInt(dest));
+			if(path==null) {System.out.println("its nulllllllll");}
+			else {
+				Iterator it = path.iterator();
+				ShortPathPainter(path,it);
+			}
 		}
+
+		///////////////////////////////////////////////
+		/////////////ConnectCheck Command\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
 		else if(e.getActionCommand() == " connect check...   ") {
-			std.text(30, 30, "connect_check");
+			graph_algorithms a = new Graph_Algo();
+			a.init(Graph);
+			boolean s = a.isConnected();
+			StdDraw.text(-1, -5, "is coonected: "+""+s, 0);
 		}
+		
+		
+		
 	}
 
+
+	private void ShortPathPainter(java.util.List<node_data> path, Iterator it) {
+
+
+		while(it.hasNext()) {
+
+			System.out.println("loop3");
+			node_data v = (node_data) it.next();
+			System.out.println(v.getKey());
+			StdDraw.setPenColor(Color.YELLOW);
+
+
+			int xv=Graph.getNode(v.getKey()).getLocation().ix();
+			int yv=Graph.getNode(v.getKey()).getLocation().iy();
+			StdDraw.filledCircle(xv,yv, 1);	
+
+			//creating edges to the vertex\\ 
+			edges = Graph.getE(v.getKey());
+			if(edges == null) {continue;}
+
+			//go over the edges that come out of the specific vertex\\ 
+			Iterator hit2 = edges.iterator();
+
+			while(hit2.hasNext()) {
+
+				StdDraw.setPenColor(Color.GREEN);
+				edge_data dest = (edge_data) hit2.next();
+				//From\\
+				int x1 = Graph.getNode(v.getKey()).getLocation().ix();
+				int y1 = Graph.getNode(v.getKey()).getLocation().iy();
+				//To\\
+				int x2 = Graph.getNode(dest.getDest()).getLocation().ix();
+				int y2 = Graph.getNode(dest.getDest()).getLocation().iy();
+
+				//draw the line between the vertexes\\ 
+				StdDraw.line(x1, y1,x2,y2);
+
+				StdDraw.setPenColor(Color.YELLOW);
+				//Draw the circle indicates the direction of the edge,
+				//by mark a oval in the 3/4 the line next to the dest vertex. 
+				StdDraw.filledCircle(((x1*1)/4)+((x2*3)/4),((y1*1)/4)+((y2*3)/4) , 1);
+
+				double w = dest.getWeight() ;
+				System.out.println(w);
+				StdDraw.setPenColor(Color.MAGENTA);
+				StdDraw.text((x1+x2)/2,(y1+y2)/2, df2.format(w));
+			}
+
+
+		}
+
+	}
 
 	/***************************************************************************
 	 *  Mouse interactions.
@@ -1714,9 +1813,10 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 * @return {@code true} if the mouse is being pressed; {@code false} otherwise
 	 */
 	public static boolean isMousePressed() {
+		
+		
 		synchronized (mouseLock) {
-
-
+			
 			return isMousePressed;
 		}
 	}
@@ -1764,7 +1864,14 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println(e.getX()+"  "+e.getY());
+		
+		NodeV temp = new NodeV(e.getX(),e.getY());
+		
+		System.out.println(temp.getLocation().ix()+" and "+temp.getLocation().iy());
+		
+		this.Graph.addNode(temp);
+		play();
+		
 	}
 
 	/**
@@ -1923,27 +2030,156 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	 *
 	 * @param args the command-line arguments
 	 */
-	public static void main(String[] args) {
-		StdDraw.square(0.2, 0.8, 0.1);
-		StdDraw.filledSquare(0.8, 0.8, 0.2);
-		StdDraw.circle(0.8, 0.2, 0.2);
 
-		StdDraw.setPenColor(StdDraw.BOOK_RED);
-		StdDraw.setPenRadius(0.02);
-		StdDraw.arc(0.8, 0.2, 0.1, 200, 45);
+	public void replay() {
+	
+	
+		Iterator hit = Graph.getV().iterator();
 
-		// draw a blue diamond
-		StdDraw.setPenRadius();
-		StdDraw.setPenColor(StdDraw.BOOK_BLUE);
-		double[] x = { 0.1, 0.2, 0.3, 0.2 };
-		double[] y = { 0.2, 0.3, 0.2, 0.1 };
-		StdDraw.filledPolygon(x, y);
+		//call paint func\\
 
-		// text
-		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.text(0.2, 0.5, "black text");
-		StdDraw.setPenColor(StdDraw.WHITE);
-		StdDraw.text(0.8, 0.8, "white text");
+		while(hit.hasNext()) {
+			//creating the vertex\\
+
+
+			node_data v = (node_data) hit.next(); 
+			StdDraw.setPenColor(Color.BLUE);
+
+
+			int xv=Graph.getNode(v.getKey()).getLocation().ix();
+			int yv=Graph.getNode(v.getKey()).getLocation().iy();
+			StdDraw.filledCircle(xv,yv, 1);	
+
+			StdDraw.setPenColor(Color.BLACK);
+
+
+			StdDraw.text(xv, yv+2, ""+v.getKey());
+
+
+
+
+
+			//creating edges to the vertex\\ 
+			edges = Graph.getE(v.getKey());
+			if(edges == null) {continue;}
+
+			//go over the edges that come out of the specific vertex\\ 
+			Iterator hit2 = edges.iterator();
+
+			while(hit2.hasNext()) {
+
+				StdDraw.setPenColor(Color.red);
+				edge_data dest = (edge_data) hit2.next();
+				//From\\
+				int x1 = Graph.getNode(v.getKey()).getLocation().ix();
+				int y1 = Graph.getNode(v.getKey()).getLocation().iy();
+				//To\\
+				int x2 = Graph.getNode(dest.getDest()).getLocation().ix();
+				int y2 = Graph.getNode(dest.getDest()).getLocation().iy();
+
+				//draw the line between the vertexes\\ 
+				StdDraw.line(x1, y1,x2,y2);
+
+				StdDraw.setPenColor(Color.YELLOW);
+				//Draw the circle indicates the direction of the edge,
+				//by mark a oval in the 3/4 the line next to the dest vertex. 
+				StdDraw.filledCircle(((x1*1)/4)+((x2*3)/4),((y1*1)/4)+((y2*3)/4) , 1);
+
+				double w = dest.getWeight() ;
+				
+				StdDraw.setPenColor(Color.MAGENTA);
+				StdDraw.text((x1+x2)/2,(y1+y2)/2, df2.format(w));
+
+
+
+			}
+
+
+		}
+	}
+	public void play() {
+
+		StdDraw.setCanvasSize(1080,512);
+		StdDraw.setXscale(-10, 120);
+		StdDraw.setYscale(-10, 120);
+		Iterator hit = Graph.getV().iterator();
+
+		//call paint func\\
+
+		while(hit.hasNext()) {
+			//creating the vertex\\
+
+
+			node_data v = (node_data) hit.next(); 
+			StdDraw.setPenColor(Color.BLUE);
+
+
+			int xv=Graph.getNode(v.getKey()).getLocation().ix();
+			int yv=Graph.getNode(v.getKey()).getLocation().iy();
+			StdDraw.filledCircle(xv,yv, 1);	
+
+			StdDraw.setPenColor(Color.BLACK);
+
+
+			StdDraw.text(xv, yv+2, ""+v.getKey());
+
+
+
+
+
+			//creating edges to the vertex\\ 
+			edges = Graph.getE(v.getKey());
+			if(edges == null) {continue;}
+
+			//go over the edges that come out of the specific vertex\\ 
+			Iterator hit2 = edges.iterator();
+
+			while(hit2.hasNext()) {
+
+				StdDraw.setPenColor(Color.red);
+				edge_data dest = (edge_data) hit2.next();
+				//From\\
+				int x1 = Graph.getNode(v.getKey()).getLocation().ix();
+				int y1 = Graph.getNode(v.getKey()).getLocation().iy();
+				//To\\
+				int x2 = Graph.getNode(dest.getDest()).getLocation().ix();
+				int y2 = Graph.getNode(dest.getDest()).getLocation().iy();
+
+				//draw the line between the vertexes\\ 
+				StdDraw.line(x1, y1,x2,y2);
+
+				StdDraw.setPenColor(Color.YELLOW);
+				//Draw the circle indicates the direction of the edge,
+				//by mark a oval in the 3/4 the line next to the dest vertex. 
+				StdDraw.filledCircle(((x1*1)/4)+((x2*3)/4),((y1*1)/4)+((y2*3)/4) , 1);
+
+				double w = dest.getWeight() ;
+				
+				StdDraw.setPenColor(Color.MAGENTA);
+				StdDraw.text((x1+x2)/2,(y1+y2)/2, df2.format(w));
+
+
+
+			}
+
+
+		}
+
+	}
+	private static DecimalFormat df2 = new DecimalFormat("#.##");
+	// contains all the edges by ID(src ver) and edge_data. 
+	private static Collection<edge_data> edges;
+
+	static graph Graph;
+	checkGUI_stdDraw G; 
+	
+
+	public StdDraw (checkGUI_stdDraw G) {
+		this.G=G;
+	}
+
+	public StdDraw (graph G) {
+		this.Graph=G;
 	}
 
 }
