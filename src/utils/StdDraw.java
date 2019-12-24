@@ -731,31 +731,35 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	private static JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
+		JMenu menu2 = new JMenu("Algo");
+		
 		menuBar.add(menu);
-		JMenuItem menuItem1 = new JMenuItem(" Save...   ");
-		JMenuItem menuItem2 = new JMenuItem(" Load...   ");			 //<<<<<<<<<<<<<<DORS
-		JMenuItem menuItem3 = new JMenuItem(" Shortest Path...   "); //<<<<<<<<<<<<<<DORS
-		JMenuItem menuItem4 = new JMenuItem(" connect check...   ");
-		menuItem1.addActionListener(std);
-		menuItem2.addActionListener(std);
-		menuItem3.addActionListener(std);
-		menuItem4.addActionListener(std);
-		menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //save 
+		menuBar.add(menu2);
+		
+		JMenuItem save = new JMenuItem(" Save...   ");
+		JMenuItem load = new JMenuItem(" Load...   ");			 //<<<<<<<<<<<<<<DORS
+		
+		JMenuItem algo_shortPath = new JMenuItem(" Shortest Path...   "); //<<<<<<<<<<<<<<DORS
+		JMenuItem algo_connectCheck = new JMenuItem(" connect check...   ");
+		
+		save.addActionListener(std);
+		load.addActionListener(std);
+		algo_shortPath.addActionListener(std);
+		algo_connectCheck.addActionListener(std);
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //save 
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-		menuItem2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //load
+		load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,   //load
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
-		//	menuItem3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,   //short path <<
-		//			Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		
 
-		//		menuItem4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,	//connect  <<
-		//				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-
-		menu.add(menuItem1);
-		menu.add(menuItem2);
-		menu.add(menuItem3);
-		menu.add(menuItem4);
+		menu.add(save);
+		menu.add(load);
+		
+		menu2.add(algo_shortPath);
+		menu2.add(algo_connectCheck);
+		
 		return menuBar;
 	}
 
@@ -2090,8 +2094,6 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				StdDraw.setPenColor(Color.MAGENTA);
 				StdDraw.text((x1+x2)/2,(y1+y2)/2, df2.format(w));
 
-
-
 			}
 
 
@@ -2157,14 +2159,8 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 				
 				StdDraw.setPenColor(Color.MAGENTA);
 				StdDraw.text((x1+x2)/2,(y1+y2)/2, df2.format(w));
-
-
-
 			}
-
-
 		}
-
 	}
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	// contains all the edges by ID(src ver) and edge_data. 
