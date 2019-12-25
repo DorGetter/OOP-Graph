@@ -73,7 +73,7 @@ public class checkGUI_stdDraw {
 		
 		
 		StdDraw s = new StdDraw(g);
-		s.play();
+		s.play(g);
 //		for (int i = 0; i < 10; i++) {
 //			double random = new Random().nextDouble();
 //			g.addNode(new NodeV(new Random().nextInt(100+1)+10,new Random().nextInt(100+1)+10));

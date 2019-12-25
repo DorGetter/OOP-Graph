@@ -1725,6 +1725,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 			String filename = chooser.getFile();
 			graph_algorithms a= new Graph_Algo();
 			a.init(filename);
+			
 
 		}
 
@@ -1850,8 +1851,9 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		
 		System.out.println(temp.getLocation().ix()+" and "+temp.getLocation().iy());
 		
-		this.Graph.addNode(temp);
-		play();
+		Graph.addNode(temp);
+		play(Graph);
+		init();
 		
 	}
 
@@ -2076,7 +2078,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 
 		}
 	}
-	public void play() {
+	public void play(graph Graph) {
 
 		StdDraw.setCanvasSize(1080,512);
 		StdDraw.setXscale(-10, 120);

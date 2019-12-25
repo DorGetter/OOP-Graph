@@ -39,6 +39,7 @@ import elements.NodeV;
 public class Graph_Algo implements graph_algorithms{
 
 	graph g;
+	
 	@Override
 	public void init(graph g) {
 		this.g = g;	

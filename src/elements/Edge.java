@@ -1,9 +1,11 @@
 package elements;
 
+import java.io.Serializable;
+
 import dataStructure.edge_data;
 import dataStructure.node_data;
 
-public class Edge implements edge_data{
+public class Edge implements edge_data, Serializable{
 	
 	node_data src;
 	node_data dest;

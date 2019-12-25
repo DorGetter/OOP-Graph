@@ -1,9 +1,11 @@
 package elements;
 
+import java.io.Serializable;
+
 import dataStructure.node_data;
 import utils.Point3D;
 
-public class NodeV implements node_data {
+public class NodeV implements node_data, Serializable {
 	
 	
     ////////////////////////////////////////////
