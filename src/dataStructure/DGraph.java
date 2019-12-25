@@ -1,5 +1,6 @@
 package dataStructure;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import java.util.Set;
 import elements.Edge;
 import elements.NodeV;
 
-public class DGraph implements graph{
+public class DGraph implements graph, Serializable{
 
 	// contains all the vertexes by ID and weight.
 	HashMap<Integer,node_data> vertex = new HashMap<Integer, node_data>();;

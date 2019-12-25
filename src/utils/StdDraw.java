@@ -1704,21 +1704,27 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 		/////////////Saving Command\\\\\\\\\\\\\\\\\\\\\
 		////////////////////////////////////////////////
 		if(e.getActionCommand() == " Save...   ") {
-			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
-			chooser.setVisible(true);
-			String filename = chooser.getFile();
-			if (filename != null) {
-				StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
-			}
+			//FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
+			JFrame f = null; 
+			String Filename = JOptionPane.showInputDialog(f,"Enter File name");
+		//	chooser.setVisible(true);
+			String filename = Filename; //chooser.getFile();
+			graph_algorithms a= new Graph_Algo();
+			a.save(filename);
+			//if (filename != null) {
+		//		StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
+		//	}
 		}
 		///////////////////////////////////////////////
 		/////////////Load Command\\\\\\\\\\\\\\\\\\\\\
 		////////////////////////////////////////////////
 
 		else if(e.getActionCommand() == " Load...   ") {
-			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.LOAD);
+			FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .txt extension", FileDialog.LOAD);
 			chooser.setVisible(true);
 			String filename = chooser.getFile();
+			graph_algorithms a= new Graph_Algo();
+			a.init(filename);
 
 		}
 
@@ -1758,53 +1764,24 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	private void ShortPathPainter(java.util.List<node_data> path, Iterator it) {
 
 
-		while(it.hasNext()) {
-
-			System.out.println("loop3");
-			node_data v = (node_data) it.next();
-			System.out.println(v.getKey());
+		for (int i = 0; i < path.size()-1; i++) {
+			int j = i+1;
+			
+			node_data s =path.get(i);
+			node_data f =path.get(j);
 			StdDraw.setPenColor(Color.YELLOW);
-
-
-			int xv=Graph.getNode(v.getKey()).getLocation().ix();
-			int yv=Graph.getNode(v.getKey()).getLocation().iy();
-			StdDraw.filledCircle(xv,yv, 1);	
-
-			//creating edges to the vertex\\ 
-			edges = Graph.getE(v.getKey());
-			if(edges == null) {continue;}
-
-			//go over the edges that come out of the specific vertex\\ 
-			Iterator hit2 = edges.iterator();
-
-			while(hit2.hasNext()) {
-
-				StdDraw.setPenColor(Color.GREEN);
-				edge_data dest = (edge_data) hit2.next();
-				//From\\
-				int x1 = Graph.getNode(v.getKey()).getLocation().ix();
-				int y1 = Graph.getNode(v.getKey()).getLocation().iy();
-				//To\\
-				int x2 = Graph.getNode(dest.getDest()).getLocation().ix();
-				int y2 = Graph.getNode(dest.getDest()).getLocation().iy();
-
-				//draw the line between the vertexes\\ 
-				StdDraw.line(x1, y1,x2,y2);
-
-				StdDraw.setPenColor(Color.YELLOW);
-				//Draw the circle indicates the direction of the edge,
-				//by mark a oval in the 3/4 the line next to the dest vertex. 
-				StdDraw.filledCircle(((x1*1)/4)+((x2*3)/4),((y1*1)/4)+((y2*3)/4) , 1);
-
-				double w = dest.getWeight() ;
-				System.out.println(w);
-				StdDraw.setPenColor(Color.MAGENTA);
-				StdDraw.text((x1+x2)/2,(y1+y2)/2, df2.format(w));
-			}
-
-
+			StdDraw.filledCircle(s.getLocation().ix(), s.getLocation().iy(), 2);
+			StdDraw.setPenColor(Color.BLACK);
+			if(i==0) {StdDraw.text(s.getLocation().ix(), s.getLocation().iy(), "Start", 0);}
+			StdDraw.setPenColor(Color.GREEN);
+			
+			StdDraw.line(s.getLocation().ix(), s.getLocation().iy(),f.getLocation().ix(),f.getLocation().iy());
+			
 		}
-
+		StdDraw.setPenColor(Color.YELLOW);
+		StdDraw.filledCircle(path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy(), 2);
+		StdDraw.setPenColor(Color.BLACK);
+		StdDraw.text(path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy(), "finish", 0);	
 	}
 
 	/***************************************************************************
@@ -2170,9 +2147,9 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
 	checkGUI_stdDraw G; 
 	
 
-	public StdDraw (checkGUI_stdDraw G) {
-		this.G=G;
-	}
+	//public StdDraw (checkGUI_stdDraw G) {
+	//	this.G=G;
+	//}
 
 	public StdDraw (graph G) {
 		this.Graph=G;

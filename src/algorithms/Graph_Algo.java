@@ -1,20 +1,28 @@
 package algorithms;
 
+
 import dataStructure.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 
 import dataStructure.edge_data;
@@ -38,14 +46,48 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public void init(String file_name) {
-		// TODO Auto-generated method stub
+		graph temp = null;
+        try
+        {    
+            FileInputStream file = new FileInputStream(file_name); 
+            ObjectInputStream in = new ObjectInputStream(file);
+            temp = (graph)in.readObject(); 
+            this.init(temp);
+            in.close(); 
+            file.close();
+            System.out.println("Object has been deserialized");
+        }    
+        catch(IOException ex) 
+        { 
+            System.out.println("IOException is caught"); 
+        } 
+          
+        catch(ClassNotFoundException ex) 
+        { 
+            System.out.println("ClassNotFoundException is caught"); 
+        } 
 
 	}
 
 	@Override
 	public void save(String file_name) {
-		// TODO Auto-generated method stub
-
+		
+        String filename = file_name; 
+          
+        try
+        {    
+            FileOutputStream file = new FileOutputStream(filename); 
+            ObjectOutputStream out = new ObjectOutputStream(file);   
+            out.writeObject(this.g); 
+            out.close(); 
+            file.close(); 
+              
+            System.out.println("Object has been serialized"); 
+        }   
+        catch(IOException ex) 
+        { 
+            System.out.println("IOException is caught"); 
+        } 
 	}
 
 	@Override
@@ -137,15 +179,17 @@ public class Graph_Algo implements graph_algorithms{
 		MinHeap heap = new MinHeap();
 		heap.add((NodeV) a, 0, a.getKey());
 		if(src == dest) {
-			return createpath(dest);
+			return createpath(src,dest);
 		}
-
+		
 		while(counter != vertex.size() && !heap.isEmpty()) {
 			System.out.println("loop1");
 			NodeV pop = heap.pop();
 			if(pop.getTag()==1) {continue;}
 			pop.setTag(1); // visited pop
-
+			
+			if(pop.getKey() == dest) {counter = vertex.size(); continue;}
+			
 			Collection<edge_data> e = g.getE(pop.getKey());		
 			if(e==null) {continue;}
 			Iterator<edge_data> edges =  e.iterator();
@@ -154,21 +198,23 @@ public class Graph_Algo implements graph_algorithms{
 			{
 				System.out.println("loop2");
 				edge_data temp = edges.next();
+				if(g.getNode(temp.getDest()).getTag()==1) {continue;}
 				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey());
 			}
 			counter++;
 		}
 
-		return createpath(dest);
+		return createpath(src,dest);
 	}
 
-	private ArrayList<node_data> createpath(int dest) {
+	private ArrayList<node_data> createpath(int src,int dest) {
 
 		if(g.getNode(dest).getWeight() == Double.MAX_VALUE) { return null;}
 		ArrayList<node_data> path = new ArrayList<node_data>();
 
 		NodeV a = (NodeV) g.getNode(dest);
-		while(a.getPrev_Id() != a.getKey()) {
+		//a.getPrev_Id() != a.getKey()
+		while(a.getKey() != src) {
 			path.add(a);
 			int prev_id = a.getPrev_Id();
 			a = (NodeV) g.getNode(prev_id);
@@ -194,63 +240,91 @@ public class Graph_Algo implements graph_algorithms{
 	public List<node_data> shortestPath(int src, int dest) {
 		return Dijkstra(src, dest);
 	}
+	
+	public Object [] shortestPath_Dist(int src, int dest) {
 
+		List<node_data> temp = Dijkstra(src, dest);
+		if(temp == null ) {
+			return null;
+		}
+		
+		Object [] arr = {temp.get(temp.size()-1).getWeight(),temp};
+		
+		return arr;
+	}
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-
-		HashMap<Integer, List<node_data>> keep_score = new HashMap<Integer, List<node_data>>();
-		Iterator hit = targets.iterator();
-		while(hit.hasNext()) {
-			Integer tar = (Integer) hit.next();
-
-			for (int i = 0; i < targets.size(); i++) {
-				if(i == tar) {continue;}
-
-				List<node_data> temp = Dijkstra(tar, i);
-				keep_score.put(tar, null);
-				int count =0;
-				for (int j = 0; j < targets.size(); j++) {
-					try {
-					if(temp.contains(g.getNode(targets.get(i)))) {
-						count++;
-					}}catch (NullPointerException e) {}
-				}
-				if(count != targets.size()) {continue;}
-				
-				if(keep_score.get(tar) == null) { 
-					keep_score.remove(tar);
-					keep_score.put(tar, temp);
-				}
-				else if(keep_score.get(tar).size() > temp.size()) {
-					keep_score.remove(tar);
-					keep_score.put(tar, temp);
+		
+		
+		double min_path = Double.MAX_VALUE;
+		
+		double min_path_temp =-1;
+		System.out.print("Loading");
+		Object [] arr_temp;
+		ArrayList<node_data> arr = new ArrayList<node_data>();
+		ArrayList<node_data> ans = new ArrayList<node_data>();
+		for (int i = 0; i < 100; i++) {  ///how much times check
+			arr = new ArrayList<node_data>();
+			System.out.print(".");
+			List<Integer> tmp = shuffleTargets(targets);
+			System.out.print("YYY");
+			min_path_temp =0;
+			for (int j = 0; j < targets.size()-1; j++) {
+				System.out.print(">");
+				arr_temp = shortestPath_Dist(tmp.get(j),tmp.get(j+1));
+				System.out.print("<");
+				if(arr_temp==null) {
+					min_path_temp = -1;
+					j=targets.size(); 
+					continue;}
+				min_path_temp += (double)arr_temp[0];
+				List<node_data> a = (List<node_data>) arr_temp[1];
+				for ( int k = 0;k< a.size(); k++) {
+					if(arr.size() != 0 && arr.get(arr.size()-1).getKey() == a.get(k).getKey() ) {continue;}
+					arr.add(a.get(k));
 				}
 			}
-		}
-		
-		List<node_data> minimal_path = null;
-		List<node_data> test;
-		
-		Set setMapKey = keep_score.keySet();
-		Iterator f = setMapKey.iterator();
-		while (f.hasNext()) {
+			if(min_path_temp < min_path && min_path_temp != -1 ) {
+				min_path = min_path_temp;
+				ans = new ArrayList<node_data>();
+				for (int j = 0; j < arr.size(); j++) {
+					ans.add(arr.get(j));
+				}
+			}
 			
-			try {
-			test = keep_score.get(f.next());
-			if(minimal_path == null) {minimal_path= test;}
-			else if(test.size() < minimal_path.size()){minimal_path= test;}
-			}catch (NullPointerException e) {}
 		}
 		
-		return minimal_path;
+		if(ans.size() == 0) {return ans;}
+		return ans;
 	}
 
+	
 
+	private List<Integer> shuffleTargets(List<Integer> targets) {
+		
+		int t1 = new Random().nextInt(targets.size()-1);
+		int t2 = new Random().nextInt(targets.size()-1);
+		System.out.print("X");
+		if(t1==t2)
+		{
+			while(t1==t2)
+			{
+				System.out.print("X");
+				t2 = new Random().nextInt(targets.size()-1);
+			}
+		}
+		System.out.print("BBB");
+		int temp = targets.get(t1);
+		targets.set(t1, targets.get(t2));
+		targets.set(t2,temp);
+		
+		return targets;
+	}
 
 	@Override
 	public graph copy() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
