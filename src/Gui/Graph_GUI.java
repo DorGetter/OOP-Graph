@@ -2,6 +2,8 @@ package Gui;
 import algorithms.Graph_Algo;
 import algorithms.graph_algorithms;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -43,7 +45,6 @@ import dataStructure.graph;
 import dataStructure.node_data;
 import elements.NodeV;
 import utils.Point3D;
-import utils.StdDraw;
 import java.lang.*;
 import java.text.DecimalFormat;
 
@@ -57,7 +58,9 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 	private static JFrame frame;
 	boolean isConnected=false;
 	List<node_data> path;
-	
+	private int min_x = 0;
+	private int min_y = 0;
+
 	int action=0;
 
 	//holds the vertex points.\\ 
@@ -70,6 +73,10 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 	Graph_Algo G = new Graph_Algo();
 
 
+	/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/////////////////////////   Constructor  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	//////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 	public Graph_GUI(graph dg)
 	{
 		initGUI();
@@ -78,11 +85,16 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 		G.init(this.graph);
 	}
 
-	private void initGUI() {
 
-		this.setSize(900,900);
+	/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/////////////////////////   window settings  \\\\\\\\\\\\\\\\\\\\\\\\\\
+	//////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+	private void initGUI() {
 		
-		this.setBackground(Color.white);
+		this.setSize(900,900);
+
+		this.setBackground(Color.WHITE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -90,11 +102,14 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 		MenuBar menuBar	 = new MenuBar();
 		Menu menu_file1	 = new Menu("file");
 		Menu menu_file2 = new Menu("Algorithems");
+		Menu menu_file3 = new Menu("Set");
 
 
 		//adding the file section to the menu bar//
 		menuBar.add(menu_file1);
 		menuBar.add(menu_file2);
+		menuBar.add(menu_file3);
+
 		this.setMenuBar(menuBar);
 
 		//creating a item in bar for short path
@@ -113,44 +128,44 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 		MenuItem is_connected = new MenuItem("connect check"); 
 		is_connected.addActionListener(this);
 
+		MenuItem TSP = new MenuItem("TSP"); 
+		TSP.addActionListener(this);
+
+		MenuItem Set_Edge = new MenuItem("Set Edge"); 
+		Set_Edge.addActionListener(this);
+
+		MenuItem Delete_Edge = new MenuItem("Delete Edge"); 
+		Delete_Edge.addActionListener(this);
+
+		MenuItem Delete_Vertex = new MenuItem("Delete Vertex"); 
+		Delete_Vertex.addActionListener(this);
+
+
+		//adding to menues:\\
+		//file
 		menu_file1.add(Save);
 		menu_file1.add(Load);
 
-
+		//algorithems
 		menu_file2.add(is_connected);
 		menu_file2.add(Shortest_Path);
+		menu_file2.add(TSP);
+
+		//Set
+		menu_file3.add(Set_Edge);
+		menu_file3.add(Delete_Edge);
+		menu_file3.add(Delete_Vertex);
+
+
 
 		//listen to the mouse\\
 		this.addMouseListener(this);
 	}
-	
-//	private void ShortPathPainter(java.util.List<node_data> path, Iterator it) {
-//		
-//		
-//		for (int i = 0; i < path.size()-1; i++) {
-//			int j = i+1;
-//
-//			node_data s =path.get(i);
-//			node_data f =path.get(j);
-//			g.setColor(Color.YELLOW);
-//			g.drawOval(s.getLocation().ix(), s.getLocation().iy(), 2,2);
-//			g.setColor(Color.BLACK);
-//			if(i==0) {g.drawString("Start",s.getLocation().ix(), s.getLocation().iy());}
-//			g.setColor(Color.GREEN);
-//
-//			g.drawLine(s.getLocation().ix(), s.getLocation().iy(),f.getLocation().ix(),f.getLocation().iy());
-//		}
-//		g.setColor(Color.YELLOW);
-//		g.fillOval(path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy(), 2,2);
-//		g.setColor(Color.BLACK);
-//		g.drawString("finish", path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy());	
-//	}
-//	
-	
-	
+
+
 	public void paint(Graphics g)
 	{
-		
+
 		
 		super.paintComponents(g);
 		this.setBackground(Color.WHITE);
@@ -162,7 +177,6 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 		super.paint(g);
 
 
-		g.fillOval(100, 100, 10, 10);
 		Iterator hit = vertex.iterator();
 		int [][] points_save = new int [vertex.size()][vertex.size()]; 
 
@@ -178,17 +192,23 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 			g.setColor(Color.BLUE);
 
 			int i=0;
+			
 			int xv=graph.getNode(v.getKey()).getLocation().ix();
 			int yv=graph.getNode(v.getKey()).getLocation().iy();
 			g.drawRect(xv-10,yv-10,20,20);
 
+			
+			if(xv > min_x) min_x =	xv;
+			if(yv > min_y) min_y =	yv;
+			
+			
 			g.drawString(""+v.getKey(),xv-2,yv+5);
 
 
-			//points_save[0][i]=xv;
-			//points_save[1][i]=yv;
+			/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+			////////////////creating edges to the vertex \\\\\\\\\\\\\\\\\\\\\\\\\\
+			//////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-			//creating edges to the vertex\\ 
 			edges = graph.getE(v.getKey());
 			if(edges == null) {continue;}
 
@@ -222,7 +242,13 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 
 			}
 		}
-		
+
+
+		///////////////////////////////////////////////
+		/////////////ShortPath Command\\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+
 		if(action == 1) {
 			for (int i = 0; i < path.size()-1; i++) {
 				int j = i+1;
@@ -242,13 +268,58 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 			g.setColor(Color.BLACK);
 			g.drawString("finish", path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy());	
 		}
-		
+
+
+
+
+
+		///////////////////////////////////////////////
+		/////////////ConnectCheck Command\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+
+
 		if(action==2) {
-			System.out.println("!!!!!!!!!!!!!!!!!!!!!!!");
-			g.getFont().getSize();
-			g.drawString("isConeected: "+isConnected, 100, 1000);
+			g.drawString("isConeected: "+isConnected, min_x-50, min_y-50);
 		}
-		
+
+
+
+
+
+
+		///////////////////////////////////////////////
+		//////////////////TSP Command\\\\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+
+		if(action==3) {
+			for (int i = 0; i < path.size()-1; i++) {
+				int j = i+1;
+
+				node_data s =path.get(i);
+				node_data f =path.get(j);
+				g.setColor(Color.YELLOW);
+				g.drawOval(s.getLocation().ix(), s.getLocation().iy(), 2,2);
+				g.setColor(Color.BLACK);
+				if(i==0) {g.drawString("Start",s.getLocation().ix(), s.getLocation().iy());}
+				g.setColor(Color.GREEN);
+
+				g.drawLine(s.getLocation().ix(), s.getLocation().iy(),f.getLocation().ix(),f.getLocation().iy());
+			}
+			g.setColor(Color.YELLOW);
+			g.fillOval(path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy(), 2,2);
+			g.setColor(Color.BLACK);
+			g.drawString("finish", path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy());
+		}
+
+
+		///////////////////////////////////////////////
+		//////////////// set Edge Command \\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+
+		this.setSize(min_x+100,min_y+100);
 		
 	}
 
@@ -300,17 +371,18 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 		///////////////////////////////////////////////
 		/////////////Saving Command\\\\\\\\\\\\\\\\\\\\\
 		////////////////////////////////////////////////
+
+
 		if(e.getActionCommand() == "Save") {
-			//FileDialog chooser = new FileDialog(StdDraw.frame, "Use a .png or .jpg extension", FileDialog.SAVE);
-			JFrame f = null; 
-			String Filename = JOptionPane.showInputDialog(f,"Enter File name");
-			//	chooser.setVisible(true);
-			String filename = Filename+".txt"; //chooser.getFile();
+			FileDialog chooser = new FileDialog(frame, "Use a .txt extension", FileDialog.SAVE);
+			chooser.setVisible(true);
+			String filename =chooser.getDirectory()+chooser.getFile();
 			G.save(filename);
-			//if (filename != null) {
-			//		StdDraw.save(chooser.getDirectory() + File.separator + chooser.getFile());
-			//	}
 		}
+
+
+
+
 		///////////////////////////////////////////////
 		/////////////Load Command\\\\\\\\\\\\\\\\\\\\\
 		////////////////////////////////////////////////
@@ -318,16 +390,23 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 		else if(e.getActionCommand() == "Load") {
 			FileDialog chooser = new FileDialog(frame, "Use a .txt extension", FileDialog.LOAD);
 			chooser.setVisible(true);
-			String filename = chooser.getFile();
+			String filename =chooser.getDirectory()+chooser.getFile();
 			graph = init(filename);
 			G.init(graph);
 			repaint();
 		}
 
+
+
 		///////////////////////////////////////////////
 		/////////////ShortPath Command\\\\\\\\\\\\\\\\\
 		////////////////////////////////////////////////
+
+
 		else if(e.getActionCommand() == "Short Path") {
+			
+			action= 0;
+			repaint();
 			JFrame f = null; 
 			String src = JOptionPane.showInputDialog(f,"Enter Src");
 			String dest = JOptionPane.showInputDialog(f,"Enter Dest");
@@ -339,14 +418,14 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 			else {
 				action = 1;
 				repaint();
-//				Iterator it = path.iterator();
-//				ShortPathPainter(path,it);
 			}
 		}
 
 		///////////////////////////////////////////////
 		/////////////ConnectCheck Command\\\\\\\\\\\\\\\
 		////////////////////////////////////////////////
+
+
 		else if(e.getActionCommand() == ("connect check")) {
 			graph_algorithms a = new Graph_Algo();
 			a.init(graph);
@@ -355,33 +434,211 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 			repaint();
 		}
 
+
+
+
+		///////////////////////////////////////////////
+		//////////////////TSP Command\\\\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+
+
+		else if(e.getActionCommand() == ("TSP")) {
+			action= 0;
+			repaint();
+			JFrame f = null;  
+			graph_algorithms a = new Graph_Algo();
+			a.init(graph);
+
+			//user input for the number of targets\\ 
+			int size_of_tr =Integer.parseInt( JOptionPane.showInputDialog(f,"Enter the number of targets: "));
+
+			int[] targets = new int[size_of_tr];			String temp="";
+
+			List<Integer> tar = new ArrayList<Integer>();
+			try {
+				for (int j = 0; j < size_of_tr; j++) {
+
+					temp = JOptionPane.showInputDialog(f,"Enter targets src ID (enter: Done when finish)");
+					if(temp == "done" ||temp == "Done" )
+						j=size_of_tr;
+
+					if(!temp.matches("\\d+")) {System.out.println("Not valid"); j--; continue;}
+
+					System.out.println(temp);
+					tar.add(Integer.parseInt(temp));
+				}
+
+			}catch (Exception ex) {	} 
+
+
+			//copy the path for paint\\
+			path = a.TSP(tar);
+			//set action;
+			action=3;
+			repaint();
+		}
+
+
+
+
+		///////////////////////////////////////////////
+		//////////////// set Edge Command \\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+
+		else if(e.getActionCommand() == ("Set Edge")) {
+
+			JFrame f= null ;
+
+
+			int src=0;		int Dest=0;		double weight = 0;		boolean flag = true;
+			String temp1=""; 	String temp2=""; 		String temp3="";
+
+
+
+			while (flag==true) {
+
+				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
+				if(temp1.matches("\\d+") && Integer.parseInt(temp1) < graph.getV().size()) {
+					src =Integer.parseInt(temp1);
+					flag=false; continue;
+				}
+				System.out.println("src Not Valid");
+			}flag =true;
+
+
+			while (flag==true) {
+
+				temp2 	= JOptionPane.showInputDialog(f,"Enter Dest ID: ");
+				if(temp2.matches("\\d+") && Integer.parseInt(temp2) < graph.getV().size()) {
+					Dest =Integer.parseInt(temp2);
+					flag=false; continue;
+				}
+				System.out.println("Dest Not Valid");
+			}flag =true;
+
+
+			while (flag==true) {
+
+				temp3 	= JOptionPane.showInputDialog(f,"Enter weight: ");
+				try {
+					weight =Double.parseDouble(temp3);
+					flag=false; 
+					continue;		
+
+				}catch (Exception ex) {System.out.println("weight Not Valid"); continue;}
+			}
+
+
+			this.graph.connect(src, Dest, weight);
+			repaint();
+		}
+
+
+
+		///////////////////////////////////////////////
+		//////////////// Delete Edge  \\\ \\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+
+		else if(e.getActionCommand() == ("Delete Edge")) {
+
+			JFrame f= null ;
+
+
+			int src=0;		int Dest=0;		boolean flag = true;
+			String temp1=""; 	String temp2=""; 		String temp3="";
+
+
+
+			while (flag==true) {
+
+				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
+				if(temp1.matches("\\d+") && Integer.parseInt(temp1) < graph.getV().size()) {
+					src =Integer.parseInt(temp1);
+					flag=false; continue;
+				}
+				System.out.println("src Not Valid");
+			}flag =true;
+
+
+			while (flag==true) {
+
+				temp2 	= JOptionPane.showInputDialog(f,"Enter Dest ID: ");
+				if(temp2.matches("\\d+") && Integer.parseInt(temp2) < graph.getV().size()) {
+					Dest =Integer.parseInt(temp2);
+					flag=false; continue;
+				}
+				System.out.println("Dest Not Valid");
+			}flag =true;
+
+			flag=false;
+			graph.removeEdge(src, Dest);
+
+			repaint();
+
+		}
+
+
+		///////////////////////////////////////////////
+		//////////////// Delete Vertex \\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+		else if(e.getActionCommand() == ("Delete Vertex")) {
+			
+			JFrame f= null ;
+
+
+			int src=0;	boolean flag = true;
+			String temp1=""; 	
+
+
+
+			while (flag==true) {
+
+				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
+				if(temp1.matches("\\d+") && Integer.parseInt(temp1) < graph.getV().size()) {
+					src =Integer.parseInt(temp1);
+					flag=false; continue;
+				}
+				System.out.println("src Not Valid");
+			}flag =true;
+
+
+
+			flag=false;
+			graph.removeNode(src);
+
+			repaint();
+
+		}
+
 	}
-	
+
 	private graph init(String file_name) {
-		
+
 		graph temp = null;
-        try
-        {    
-            FileInputStream file = new FileInputStream(file_name); 
-            ObjectInputStream in = new ObjectInputStream(file);
-            temp = (graph)in.readObject(); 
-            in.close(); 
-            file.close();
-            System.out.println("Object has been deserialized");
-            return temp;
-        }    
-        catch(IOException ex) 
-        { 
-            System.out.println("IOException is caught"); 
-        } 
-          
-        catch(ClassNotFoundException ex) 
-        { 
-            System.out.println("ClassNotFoundException is caught"); 
-        } 
-        return null;
+		try
+		{    
+			FileInputStream file = new FileInputStream(file_name); 
+			ObjectInputStream in = new ObjectInputStream(file);
+			temp = (graph)in.readObject(); 
+			in.close(); 
+			file.close();
+			System.out.println("Object has been deserialized");
+			return temp;
+		}    
+		catch(IOException ex) 
+		{ 
+			System.out.println("IOException is caught"); 
+		} 
+
+		catch(ClassNotFoundException ex) 
+		{ 
+			System.out.println("ClassNotFoundException is caught"); 
+		} 
+		return null;
 	}
-	
+
 
 
 }

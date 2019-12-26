@@ -31,20 +31,43 @@ import dataStructure.node_data;
 import elements.Edge;
 import elements.NodeV;
 /**
- * This empty class represents the set of graph-theory algorithms
- * which should be implemented as part of Ex2 - Do edit this class.
- * @author 
+ * This class holds implementations of graph_algorithems interface.
+ * Algorithms: 
+ * 			1.init(file.txt) 	 graph from file.txt.
+ * 			2.save			 	 deserialized to graph object from txt file. 
+ * 								 and build a new graph from it.
+ * 			3.isConnected  		 checks if the graph is strongly Connected. 
+ *			4.shortest_path		 return the shortest path between two Vertexes. (Using Dijakstra)
+ *			5.shortest_path		 sum the shortest path weight between two vertxes. (Using Dijakstra) 			
+ * 			6.TSP				 return the relatively shortest path that pass on all the targets 
+ * 								 vertexes input to function.
+ * 
+ * 
+ *Secondery Algorithems + Methods: 
+ *			
+ * 			1.BFS			 Breath first check algorithm Used to check isConnected.
+ * 			2.Dijkstra		 calculate the shortest path between src --> dest.
+ * 
+ * 
+ * @author Dor Getter && Omer Rugi  
  *
  */
 public class Graph_Algo implements graph_algorithms{
-
-	graph g;
 	
+	graph g;
+	/**
+	 * ******************************************
+	 ****************Constructor*****************
+	 ********************************************
+	 */
 	@Override
 	public void init(graph g) {
 		this.g = g;	
 	}
-
+	/**
+	 * Init this set of algorithms on the parameter - graph.
+	 * @param g
+	 */
 	@Override
 	public void init(String file_name) {
 		graph temp = null;
@@ -69,16 +92,21 @@ public class Graph_Algo implements graph_algorithms{
         } 
 
 	}
-
+/**
+ * The Method received a String name and save the graph OBJ 
+ * in in that name; 
+ * @param file_name: Name of the file wished to save in.
+ */
 	@Override
 	public void save(String file_name) {
-		
+		//holds the wished name to save by;
         String filename = file_name; 
           
         try
         {    
-            FileOutputStream file = new FileOutputStream(filename); 
-            ObjectOutputStream out = new ObjectOutputStream(file);   
+        	
+            FileOutputStream file = new FileOutputStream(filename); //writing data to file;  
+            ObjectOutputStream out = new ObjectOutputStream(file);  //serilaze the object to the file
             out.writeObject(this.g); 
             out.close(); 
             file.close(); 
@@ -90,7 +118,18 @@ public class Graph_Algo implements graph_algorithms{
             System.out.println("IOException is caught"); 
         } 
 	}
-
+	
+	
+/**
+ * 			This method checks if a graph is "Strongly connected".
+ * Strong Connected Directed Graph definition:  
+ * 		A directed graph is called strongly connected if there is a path in each direction
+ *  	between each pair of vertices of the graph.
+ * 
+ * 
+ * using BFS algorithm the function returns wither all Vertexes been visited. 
+ * if so it returns true;   
+ */
 	@Override
 	public boolean isConnected() {
 		Collection<node_data> vertex = g.getV();
@@ -100,7 +139,11 @@ public class Graph_Algo implements graph_algorithms{
 		}
 		return false;
 	}
-
+/**
+ * 
+ * @param array 
+ * @return
+ */
 	private Collection<node_data> rev_collection(Object [] array) {
 
 		Collection<node_data> rev = new ArrayList<node_data>();
@@ -109,7 +152,12 @@ public class Graph_Algo implements graph_algorithms{
 		}
 		return rev;
 	}
-
+/**
+ * Breath First serach: 
+ * 
+ * @param vertex collections of vertexes of the graph.
+ * @return boolean , true: if all vertexes been visited, false otherwise;  
+ */
 	public boolean BFS(Collection<node_data> vertex) {
 
 		Queue<node_data> q = new LinkedList<node_data>();
@@ -265,7 +313,7 @@ public class Graph_Algo implements graph_algorithms{
 		Object [] arr_temp;
 		ArrayList<node_data> arr = new ArrayList<node_data>();
 		ArrayList<node_data> ans = new ArrayList<node_data>();
-		for (int i = 0; i < 100; i++) {  ///how much times check
+		for (int i = 0; i < 68; i++) {  ///how much times check
 			arr = new ArrayList<node_data>();
 			System.out.print(".");
 			List<Integer> tmp = shuffleTargets(targets);

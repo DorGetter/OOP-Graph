@@ -53,12 +53,18 @@ public class checkGUI {
 		
 		
 		ga.init(g);
-
+//		List<Integer> listar = new ArrayList<Integer>();
+//		listar.add(0);
+//		listar.add(1);
+//		listar.add(2);
+		
+//		List<node_data> a =ga.TSP(listar);
+//		System.out.println(a.toString());
 		Graph_GUI wind = new Graph_GUI(g);				
+		
 		wind.setVisible(true);
 		
-		ga.init("dor.txt");
-		
+	
 
 
 

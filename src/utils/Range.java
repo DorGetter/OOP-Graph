@@ -1,10 +1,13 @@
 package utils;
+
+import java.io.Serializable;
+
 /**
  * This class represents a simple 1D range of shape [min,max]
  * @author boaz_benmoshe
  *
  */
-public class Range {
+public class Range implements Serializable{
 	private double _min, _max;
 	public Range(double min, double max) {
 		set_min(min);
