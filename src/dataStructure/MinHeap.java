@@ -1,34 +1,36 @@
 package dataStructure;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import elements.NodeV;
 
 public class MinHeap{
-	ArrayList<NodeV> heap;
+	ArrayList<node_data> heap;
 
 	public MinHeap () {
-		heap = new ArrayList<NodeV>();}
+		heap = new ArrayList<node_data>();}
 
-	public void add(NodeV v, double w, int prev_id) {
+	public void add(node_data v, double w, int prev_id,HashMap<Integer, Integer> prev) {
 
 		if(heap.contains(v)) {
-			updatew(v,w,prev_id);
+			updatew(v,w,prev_id,prev);
 			return;
 		}
 		v.setWeight(w);
-		v.setPrev_Id(prev_id);
+		//v.setPrev_Id(prev_id);
+		prev.put(v.getKey(), prev_id);
 		add_heapfyup(v);
 	}
 
-	private void add_heapfyup(NodeV v) {
+	private void add_heapfyup(node_data v) {
 		heap.add(v);
 		int index = heap.size()-1;
 		while(index > 0) {
 			int parent = (index-1)/2;
 
 			if(heap.get(index).getWeight()< heap.get(parent).getWeight()) {
-				NodeV temp = heap.get(parent);
+				node_data temp = heap.get(parent);
 				heap.set(parent, heap.get(index));
 				heap.set(index, temp);
 				index = parent;
@@ -40,26 +42,27 @@ public class MinHeap{
 
 	}
 
-	private void updatew(NodeV v, double w,int prev_id) {
-		if(w<v.getWeight()) {
+	private void updatew(node_data v, double w,int prev_id,HashMap<Integer, Integer> prev) {
+		if(w < v.getWeight()) {
 			v.setWeight(w);
-			v.setPrev_Id(prev_id);
+			//v.setPrev_Id(prev_id);
+			prev.replace(v.getKey(), prev_id);
 		}
 	}
 
-	public NodeV pop() {
+	public node_data pop() {
 		
-		NodeV temp = heap.get(0);
+		node_data temp = heap.get(0);
 		heap.set(0, heap.get(heap.size()-1));
 		heap.set(heap.size()-1, temp);
-		NodeV pop = heap.remove(heap.size()-1);
+		node_data pop = heap.remove(heap.size()-1);
 
 		heapfy_down();
 		return pop;
 	}
 
 	private void swap(int a ,int b) {
-		NodeV temp = heap.get(a);
+		node_data temp = heap.get(a);
 		heap.set(a, heap.get(b));
 		heap.set(b, temp);
 	}

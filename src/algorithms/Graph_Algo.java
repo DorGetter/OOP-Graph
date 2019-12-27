@@ -19,15 +19,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
-import dataStructure.edge_data;
-import dataStructure.graph;
-import dataStructure.node_data;
 import elements.Edge;
 import elements.NodeV;
 /**
@@ -48,7 +43,6 @@ import elements.NodeV;
  * 			1.BFS			 Breath first check algorithm Used to check isConnected.
  * 			2.Dijkstra		 calculate the shortest path between src --> dest.
  * 
- * 
  * @author Dor Getter && Omer Rugi  
  *
  */
@@ -65,7 +59,7 @@ public class Graph_Algo implements graph_algorithms{
 		this.g = g;	
 	}
 	/**
-	 * Init this set of algorithms on the parameter - graph.
+	 * Initialized graph from file
 	 * @param g
 	 */
 	@Override
@@ -94,7 +88,7 @@ public class Graph_Algo implements graph_algorithms{
 	}
 /**
  * The Method received a String name and save the graph OBJ 
- * in in that name; 
+ * in given name; 
  * @param file_name: Name of the file wished to save in.
  */
 	@Override
@@ -123,12 +117,14 @@ public class Graph_Algo implements graph_algorithms{
 /**
  * 			This method checks if a graph is "Strongly connected".
  * Strong Connected Directed Graph definition:  
- * 		A directed graph is called strongly connected if there is a path in each direction
+ * 		A directed graph is called strongly connected if there is a path
  *  	between each pair of vertices of the graph.
  * 
  * 
- * using BFS algorithm the function returns wither all Vertexes been visited. 
- * if so it returns true;   
+ * Using BFS algorithm the function checks if between random points of the graph
+ * there is a path ad in which all vertexes have been visited. 
+ * . 
+ * if all vertexes been visited it returns true;   
  */
 	@Override
 	public boolean isConnected() {
@@ -140,9 +136,9 @@ public class Graph_Algo implements graph_algorithms{
 		return false;
 	}
 /**
- * 
- * @param array 
- * @return
+ * This method reverse a given Collection. 
+ * @param array Obj array; 
+ * @return reverse node_data Collection.  
  */
 	private Collection<node_data> rev_collection(Object [] array) {
 
@@ -153,7 +149,16 @@ public class Graph_Algo implements graph_algorithms{
 		return rev;
 	}
 /**
- * Breath First serach: 
+ * Breath First search: 
+ * 
+ * 
+ * In given Collection of vertexes from a given graph,
+ * the algorithem  will check if the graph is strongly Connected.
+ * Breadth first search is a graph traversal algorithm that starts traversing the graph from random node and explores
+ * all the neighboring nodes. Then, it selects the nearest node and explore all the unexplored nodes. 
+ * The algorithm follows the same process for each of the nearest node using a queue until queue is empty which indicates all the neighboring 
+ * that are connected to the random first node are connected by path. 
+ * then using a 'check_all_visited' method check if all vertexes marked visited. 
  * 
  * @param vertex collections of vertexes of the graph.
  * @return boolean , true: if all vertexes been visited, false otherwise;  
@@ -164,30 +169,35 @@ public class Graph_Algo implements graph_algorithms{
 		if(vertex.isEmpty()) {
 			return false;
 		}
-		all_white(vertex);
+		all_Zero(vertex); //set tag of vertexes to 0 (unvisited); 
 		Iterator hit = vertex.iterator();
 		node_data a = (node_data) hit.next();
-		a.setTag(1);
-		q.add(a);
+		a.setTag(1); //sets the first vertex to visited.
+		q.add(a);	//adds it to queue 
 
 		while(!q.isEmpty()) {
-			node_data first_out = q.remove();
-			Collection<edge_data> e = g.getE(first_out.getKey());
-			if(e == null) {return false;}
+			
+			node_data first_out = q.remove(); //dequeue the first in queue. 
+			Collection<edge_data> e = g.getE(first_out.getKey()); //getting all the neighboring.
+			if(e == null) {return false;} //if there are no edges coming out return false (indicates the graph cannot be connected).   
 			Iterator bgu = e.iterator();
-			while(bgu.hasNext()) {
-				edge_data ed = (Edge) bgu.next();
-				int nver = ed.getDest();
-				if(g.getNode(nver).getTag() == 0) {
-					g.getNode(nver).setTag(1);
-					q.add(g.getNode(nver));
+			while(bgu.hasNext()) {  //iterating over the vertex edges
+				edge_data ed = (Edge) bgu.next(); 
+				int nver = ed.getDest();	//gets the next neighbor. 
+				if(g.getNode(nver).getTag() == 0) {	//checks if already visited. 
+					g.getNode(nver).setTag(1);	//if not visited set to visited. 
+					q.add(g.getNode(nver));	//add the vertex to the queue. 
 				}
 			}
 
 		}
-		return check_all_visited(vertex);
+		return check_all_visited(vertex); //checks the tag on all vertexes. 
 	}
-
+/**
+ * In given node_data Collection iterates all vertexes and validate all tags marked as visited (visited==1). 
+ * @param vertex
+ * @return true: all marked 1 , false: if at least one vertex tag 0 ;
+ */
 	private boolean check_all_visited(Collection<node_data> vertex) {
 
 		Iterator idc = vertex.iterator();
@@ -199,15 +209,21 @@ public class Graph_Algo implements graph_algorithms{
 		}
 		return true;
 	}
-
-	private void all_white(Collection<node_data> vertex) {
+/**
+ * Iterates Over all vertexes and set tag to 0; (unvisited);
+ * @param vertex
+ */
+	private void all_Zero(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
 		while(tau.hasNext()) {
 			node_data check = (node_data) tau.next();
 			check.setTag(0);
 		}
 	}
-
+/**
+ * Iterates Over all vertexes and set weight to infinity; (unvisited);
+ * @param vertex
+ */
 	private void all_inf(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
 		while(tau.hasNext()) {
@@ -215,25 +231,42 @@ public class Graph_Algo implements graph_algorithms{
 			check.setWeight(Double.MAX_VALUE);
 		}
 	}
-
+/**
+ * Dijkstra:
+ * Given a graph and a source vertex in the graph, find shortest paths from source to all vertices in the given graph.
+ * Base:
+ * setting all vertexes weight to INF and tag them 0 - Unvisited; 
+ * --------------------------------------------------------------
+ * Algo: 
+ * Extract the first src node and set his weight to 0 (The cost of path from src to src is zero); 
+ * Using a Min heap add src to heap; 
+ * 
+ * 
+ * 
+ * @param src start point.
+ * @param dest end point . 
+ * @return
+ */
 	private ArrayList<node_data> Dijkstra(int src, int dest){
 
 		Collection<node_data> vertex = g.getV();
-		all_white(vertex);
+		all_Zero(vertex);
 		all_inf(vertex);
 
 		node_data a = g.getNode(src);
 		a.setWeight(0);
 		int counter=0;
+		
 		MinHeap heap = new MinHeap();
-		heap.add((NodeV) a, 0, a.getKey());
+		HashMap<Integer, Integer> prev_id = new HashMap<Integer, Integer>();
+		
+		heap.add((node_data) a, 0, a.getKey(),prev_id);
 		if(src == dest) {
-			return createpath(src,dest);
+			return createpath(src,dest,prev_id);
 		}
 		
 		while(counter != vertex.size() && !heap.isEmpty()) {
-			System.out.println("loop1");
-			NodeV pop = heap.pop();
+			node_data pop = heap.pop();
 			if(pop.getTag()==1) {continue;}
 			pop.setTag(1); // visited pop
 			
@@ -245,28 +278,27 @@ public class Graph_Algo implements graph_algorithms{
 
 			while(edges.hasNext()) //adding all sons..
 			{
-				System.out.println("loop2");
 				edge_data temp = edges.next();
 				if(g.getNode(temp.getDest()).getTag()==1) {continue;}
-				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey());
+				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey(),prev_id);
 			}
 			counter++;
 		}
 
-		return createpath(src,dest);
+		return createpath(src,dest,prev_id);
 	}
 
-	private ArrayList<node_data> createpath(int src,int dest) {
+	private ArrayList<node_data> createpath(int src,int dest,HashMap<Integer, Integer> prev_id) {
 
 		if(g.getNode(dest).getWeight() == Double.MAX_VALUE) { return null;}
 		ArrayList<node_data> path = new ArrayList<node_data>();
 
-		NodeV a = (NodeV) g.getNode(dest);
-		//a.getPrev_Id() != a.getKey()
+		node_data a = (node_data) g.getNode(dest);
+
 		while(a.getKey() != src) {
 			path.add(a);
-			int prev_id = a.getPrev_Id();
-			a = (NodeV) g.getNode(prev_id);
+			int prev = prev_id.get(a.getKey()) ;
+			a = (node_data) g.getNode(prev);
 		}
 
 		path.add(a);
@@ -305,24 +337,20 @@ public class Graph_Algo implements graph_algorithms{
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
 		
+		if(!this.isConnected()) {return null;}
 		
 		double min_path = Double.MAX_VALUE;
 		
 		double min_path_temp =-1;
-		System.out.print("Loading");
 		Object [] arr_temp;
 		ArrayList<node_data> arr = new ArrayList<node_data>();
 		ArrayList<node_data> ans = new ArrayList<node_data>();
 		for (int i = 0; i < 68; i++) {  ///how much times check
 			arr = new ArrayList<node_data>();
-			System.out.print(".");
 			List<Integer> tmp = shuffleTargets(targets);
-			System.out.print("YYY");
 			min_path_temp =0;
 			for (int j = 0; j < targets.size()-1; j++) {
-				System.out.print(">");
 				arr_temp = shortestPath_Dist(tmp.get(j),tmp.get(j+1));
-				System.out.print("<");
 				if(arr_temp==null) {
 					min_path_temp = -1;
 					j=targets.size(); 
@@ -354,16 +382,14 @@ public class Graph_Algo implements graph_algorithms{
 		
 		int t1 = new Random().nextInt(targets.size()-1);
 		int t2 = new Random().nextInt(targets.size()-1);
-		System.out.print("X");
 		if(t1==t2)
 		{
 			while(t1==t2)
 			{
-				System.out.print("X");
 				t2 = new Random().nextInt(targets.size()-1);
 			}
 		}
-		System.out.print("BBB");
+	
 		int temp = targets.get(t1);
 		targets.set(t1, targets.get(t2));
 		targets.set(t2,temp);
@@ -374,7 +400,24 @@ public class Graph_Algo implements graph_algorithms{
 	@Override
 	public graph copy() {
 		
-		return null;
+		graph new_g = new DGraph();
+		
+		Collection<node_data> v = g.getV();
+		Iterator v_it = v.iterator();
+		while(v_it.hasNext()) {	
+			node_data new_v = (node_data)v_it.next();
+			new_g.addNode(new_v);
+			
+			Collection<edge_data> e = g.getE(new_v.getKey());
+			Iterator e_it = e.iterator();
+			
+			while (e_it.hasNext()) {
+				edge_data new_e = (edge_data) e_it.next();
+				new_g.connect(new_e.getSrc(), new_e.getDest(), new_e.getWeight());
+			}
+		}
+
+		return new_g;
 	}
 
 
