@@ -47,17 +47,29 @@ import elements.NodeV;
  *
  */
 public class Graph_Algo implements graph_algorithms{
+
 	
+	
+    ////////////////////////////////////////////
+    //////////////    fields     ///////////////
+    ////////////////////////////////////////////
 	graph g;
-	/**
-	 * ******************************************
-	 ****************Constructor*****************
-	 ********************************************
-	 */
+
+
+    /////////////////////////////////////////////////////////////////
+    ///////////////////     Constructor     /////////////////////////
+    /////////////////////////////////////////////////////////////////
+	
 	@Override
 	public void init(graph g) {
 		this.g = g;	
 	}
+	
+	
+    ///////////////////////////////////////////////////////////////////////////
+    ////////////////////////////       methods        /////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Initialized graph from file
 	 * @param g
@@ -241,53 +253,67 @@ public class Graph_Algo implements graph_algorithms{
  * Extract the first src node and set his weight to 0 (The cost of path from src to src is zero); 
  * Using a Min heap add src to heap; 
  * 
- * 
- * 
+ * The Algo Will Resume as followed: 
+ * for each iteration the top off the Min heap node will represents the shortest path from src by weight. 
+ * the algorithm works as a greedy algorithm which will move forwards in the least "expensive" path until reach the 
+ * Destination node. 
+ * in the end the shortest path will send to create path method and returns a Array List contained the path itself. 
  * @param src start point.
  * @param dest end point . 
- * @return
+ * @return shortest path between src & dest. 
  */
 	private ArrayList<node_data> Dijkstra(int src, int dest){
 
-		Collection<node_data> vertex = g.getV();
-		all_Zero(vertex);
-		all_inf(vertex);
+		Collection<node_data> vertex = g.getV(); // getting all vertexes. 
+		all_Zero(vertex); //sets tag to 0; )Unvisited; 
+		all_inf(vertex); // sets the path cost to 0; 
 
-		node_data a = g.getNode(src);
-		a.setWeight(0);
-		int counter=0;
+		node_data a = g.getNode(src); //getting the start node. 
+		a.setWeight(0); //set star node path cost to 0; 
+		int counter=0; //Counter usage for stopping condition counts vertexes; 
 		
-		MinHeap heap = new MinHeap();
-		HashMap<Integer, Integer> prev_id = new HashMap<Integer, Integer>();
+		MinHeap heap = new MinHeap(); //Will store the least valued path next vertex; 
 		
-		heap.add((node_data) a, 0, a.getKey(),prev_id);
-		if(src == dest) {
+		HashMap<Integer, Integer> prev_id = new HashMap<Integer, Integer>(); //Will store the previous node in the path. 
+		
+		heap.add((node_data) a, 0, a.getKey(),prev_id); //adding the start node to heap; 
+		if(src == dest) { //stoping condition. 
 			return createpath(src,dest,prev_id);
 		}
 		
 		while(counter != vertex.size() && !heap.isEmpty()) {
-			node_data pop = heap.pop();
-			if(pop.getTag()==1) {continue;}
+			node_data pop = heap.pop(); //pop the least valued path node. 
+			if(pop.getTag()==1) {continue;}	//if visited already just continue;
 			pop.setTag(1); // visited pop
 			
-			if(pop.getKey() == dest) {counter = vertex.size(); continue;}
+			if(pop.getKey() == dest) {counter = vertex.size(); continue;} //another stopping condition.(reached destination) 
 			
 			Collection<edge_data> e = g.getE(pop.getKey());		
 			if(e==null) {continue;}
-			Iterator<edge_data> edges =  e.iterator();
+			Iterator<edge_data> edges =  e.iterator(); 
 
-			while(edges.hasNext()) //adding all sons..
+			while(edges.hasNext()) //adding all sons of the node.
 			{
-				edge_data temp = edges.next();
-				if(g.getNode(temp.getDest()).getTag()==1) {continue;}
-				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey(),prev_id);
+				edge_data temp = edges.next(); 
+				if(g.getNode(temp.getDest()).getTag()==1) {continue;} //if visited continue;
+				heap.add((NodeV) g.getNode(temp.getDest()) , temp.getWeight()+pop.getWeight(), pop.getKey(),prev_id); //else add the node to the heap; 
 			}
-			counter++;
+			counter++; 
 		}
 
-		return createpath(src,dest,prev_id);
+		return createpath(src,dest,prev_id); //rearrange the order of the path from end-->start to start-->end; 
 	}
-
+/**
+ * 
+ * iterates from destination node backwards by using the prev_id to determine the 
+ * father of the node in the path. 
+ * when its reaches src as the prev_id it returns the path as Array List of Node_data; 
+ * 
+ * @param src
+ * @param dest
+ * @param prev_id data structure to hold the father of a node in a path. 
+ * @return the path src --> destination
+ */
 	private ArrayList<node_data> createpath(int src,int dest,HashMap<Integer, Integer> prev_id) {
 
 		if(g.getNode(dest).getWeight() == Double.MAX_VALUE) { return null;}
@@ -305,23 +331,35 @@ public class Graph_Algo implements graph_algorithms{
 		path = (ArrayList<node_data>) rev_collection(path.toArray());
 		return path;
 	}
-
+/**
+ * Using a Dijkstra method
+ * which creating the shortest path between src --> dest extracting the weight of the path.
+ * @return the cost value (double) of the shortest path src --> dest.   
+ */
 	@Override
 	public double shortestPathDist(int src, int dest) {	
 
 		List<node_data> temp = Dijkstra(src, dest);
 		if(temp == null ) {
-			return -1;
+			return -1; 
 		}
 
 		return temp.get(temp.size()-1).getWeight();
 	}
-
+	/**
+	 * Using a Dijkstra method
+	 * which creating the shortest path between src --> dest extracting the path.
+	 * @return the shortest path src --> dest.   
+	 */
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
 		return Dijkstra(src, dest);
 	}
-	
+	/**
+	 * Using a Dijkstra method
+	 * which creating the shortest path between src --> dest extracting the weight & path.
+	 * @return the cost value (double) && the shortest path src --> dest    
+	 */
 	public Object [] shortestPath_Dist(int src, int dest) {
 
 		List<node_data> temp = Dijkstra(src, dest);
@@ -334,6 +372,20 @@ public class Graph_Algo implements graph_algorithms{
 		return arr;
 	}
 
+	
+	
+	
+	/**
+	 * 
+	 * Tsp: 
+	 * The method calculates the relatively short path between given targets. 
+	 * 
+	 * Algo: 
+	 * in given targets list each iteration will shuffle the targets visiting positions and calculate using the Dijkstra algorithm 
+	 * the shortest path between t1-->t2 t2-->t3 ... tn-1-->tn (t==target), and iterates for 68 times which will statistically 
+	 * will compute the shortest path.  
+	 * @return the 'shortest' path. 
+	 */
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
 		
@@ -341,28 +393,29 @@ public class Graph_Algo implements graph_algorithms{
 		
 		double min_path = Double.MAX_VALUE;
 		
-		double min_path_temp =-1;
-		Object [] arr_temp;
-		ArrayList<node_data> arr = new ArrayList<node_data>();
-		ArrayList<node_data> ans = new ArrayList<node_data>();
-		for (int i = 0; i < 68; i++) {  ///how much times check
+		double min_path_temp =-1; //base 
+		Object [] arr_temp; //will hold the path between ti-->ti+1 & cost.	 
+		ArrayList<node_data> arr = new ArrayList<node_data>();	//sum up the path between t1 ----> tn (if exists).
+		ArrayList<node_data> ans = new ArrayList<node_data>();  //will hold the shortest path. 
+		for (int i = 0; i < 68; i++) {  // how many checks. 
 			arr = new ArrayList<node_data>();
-			List<Integer> tmp = shuffleTargets(targets);
-			min_path_temp =0;
-			for (int j = 0; j < targets.size()-1; j++) {
+			List<Integer> tmp = shuffleTargets(targets); //shuffle the targets list. 
+			min_path_temp =0;							//setting the min path temp to hold the current path cost; 
+			for (int j = 0; j < targets.size()-1; j++) {	//go over all the targets and try to create path ti-->ti+1; 
 				arr_temp = shortestPath_Dist(tmp.get(j),tmp.get(j+1));
-				if(arr_temp==null) {
+				if(arr_temp==null) { // if there is no path; 
 					min_path_temp = -1;
 					j=targets.size(); 
 					continue;}
-				min_path_temp += (double)arr_temp[0];
-				List<node_data> a = (List<node_data>) arr_temp[1];
-				for ( int k = 0;k< a.size(); k++) {
+				min_path_temp += (double)arr_temp[0]; //add the cost of ti-->ti+1 + t1--------->ti-1;
+				List<node_data> a = (List<node_data>) arr_temp[1];  
+				for ( int k = 0; k < a.size(); k++) {  //add the path of ti-->ti+1 + t1--------->ti-1;
 					if(arr.size() != 0 && arr.get(arr.size()-1).getKey() == a.get(k).getKey() ) {continue;}
 					arr.add(a.get(k));
 				}
 			}
-			if(min_path_temp < min_path && min_path_temp != -1 ) {
+			
+			if(min_path_temp < min_path && min_path_temp != -1 ) { //checks if the new checked path is least "expensive" than the minimum path stores.
 				min_path = min_path_temp;
 				ans = new ArrayList<node_data>();
 				for (int j = 0; j < arr.size(); j++) {
@@ -372,12 +425,16 @@ public class Graph_Algo implements graph_algorithms{
 			
 		}
 		
-		if(ans.size() == 0) {return ans;}
+		if(ans.size() == 0) {return ans;} 
 		return ans;
 	}
 
 	
-
+/**
+ * takes a list and shuffle randomly the elements positions inside
+ * @param targets
+ * @return rearrange form of targets
+ */
 	private List<Integer> shuffleTargets(List<Integer> targets) {
 		
 		int t1 = new Random().nextInt(targets.size()-1);
@@ -396,7 +453,9 @@ public class Graph_Algo implements graph_algorithms{
 		
 		return targets;
 	}
-
+/**
+ * Deep copy method of graph.
+ */
 	@Override
 	public graph copy() {
 		
@@ -419,6 +478,160 @@ public class Graph_Algo implements graph_algorithms{
 
 		return new_g;
 	}
+	
+	
+	//|--------------------------------------------------------------------------------------------------------------------------------|
+	//|----------------------------------------------------SUB-CLASS-------------------------------------------------------------------|
+	//|--------------------------------------------------------------------------------------------------------------------------------|
+	/**
+	 * MinHeap Data Structure: 
+	 * 
+	 * this data structure will contain node_data obj. and sort them by the node_data weight. 
+	 * 
+	 * will support the MinHeap methods: 
+	 * push , pop . (not include peek).
+	 * uses heapyup & heapyfudown for rearranging positions in the tree. 
+	 * 
+	 */
+	
+	public class MinHeap{
+		
+		 ////////////////////////////////////////////
+	    //////////////    fields     ///////////////
+	    ////////////////////////////////////////////
+		
+		
+		ArrayList<node_data> heap;
+
+		
+		 /////////////////////////////////////////////////////////////////
+	    ///////////////////     Constructor     /////////////////////////
+	    /////////////////////////////////////////////////////////////////
+		
+		
+		public MinHeap () {
+			heap = new ArrayList<node_data>();}
+
+	    ///////////////////////////////////////////////////////////////////////////
+	    ////////////////////////////       methods        /////////////////////////
+	    ///////////////////////////////////////////////////////////////////////////
+		
+		
+		public void add(node_data v, double w, int prev_id,HashMap<Integer, Integer> prev) {
+
+			if(heap.contains(v)) {
+				updatew(v,w,prev_id,prev);
+				return;
+			}
+			v.setWeight(w);
+			prev.put(v.getKey(), prev_id);
+			add_heapfyup(v);
+		}
+
+		private void add_heapfyup(node_data v) {
+			heap.add(v);
+			int index = heap.size()-1;
+			while(index > 0) {
+				int parent = (index-1)/2;
+
+				if(heap.get(index).getWeight()< heap.get(parent).getWeight()) {
+					node_data temp = heap.get(parent);
+					heap.set(parent, heap.get(index));
+					heap.set(index, temp);
+					index = parent;
+				}
+				else {
+					return;
+				}
+			}
+
+		}
+
+		private void updatew(node_data v, double w,int prev_id,HashMap<Integer, Integer> prev) {
+			if(w < v.getWeight()) {
+				v.setWeight(w);
+				prev.replace(v.getKey(), prev_id);
+			}
+		}
+
+		public node_data pop() {
+			
+			node_data temp = heap.get(0);
+			heap.set(0, heap.get(heap.size()-1));
+			heap.set(heap.size()-1, temp);
+			node_data pop = heap.remove(heap.size()-1);
+
+			heapfy_down();
+			return pop;
+		}
+
+		private void swap(int a ,int b) {
+			node_data temp = heap.get(a);
+			heap.set(a, heap.get(b));
+			heap.set(b, temp);
+		}
+
+		private void heapfy_down() {
+
+			int right 		=2;
+			int left 		=1;
+			int movingindex =0;
+			int end 		=heap.size()-1; 
+
+
+			while(movingindex != end && right < end && left < end) {
+
+				if(heap.get(movingindex).getWeight() > heap.get(left).getWeight())
+				{
+					if(heap.get(left).getWeight() < heap.get(right).getWeight())
+					{
+						swap(movingindex,left);
+						movingindex = left; 
+						left = (movingindex*2)+1;
+						right= (movingindex*2)+2;
+					}
+					else if(heap.get(right).getWeight() < heap.get(left).getWeight())
+					{
+						swap(movingindex,right);
+						movingindex = right; 
+						left = (movingindex*2)+1;
+						right= (movingindex*2)+2;
+					}
+					else 
+					{
+						swap(movingindex,left);
+						movingindex = left; 
+						left = (movingindex*2)+1;
+						right= (movingindex*2)+2;
+					}
+
+				} else return; 
+			}
+			
+			if(left<end) 
+			{
+				if(heap.get(left).getWeight() < heap.get(movingindex).getWeight())
+				 {swap(movingindex,left);}
+			}
+		}
+		
+		public String toString() {
+			String print = "[";
+			for (int i = 0; i <heap.size(); i++) {
+				print+=heap.get(i).getWeight();
+				if(i != heap.size()-1) {
+					print+=",";
+				}
+			}
+			print+="]";
+			return print;
+		}
+		
+		public boolean isEmpty() {
+			return heap.isEmpty();
+		}
+	}
+
 
 
 }

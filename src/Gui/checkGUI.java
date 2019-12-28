@@ -7,10 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import algorithms.Graph_Algo;
 import dataStructure.DGraph;
-import dataStructure.MinHeap;
 import dataStructure.graph;
 import dataStructure.node_data;
 import elements.NodeV;
@@ -23,7 +23,7 @@ public class checkGUI {
 		double start = 0;
 		double end = 100;
 		
-		g.addNode(new NodeV(100,100));//0
+		
 		g.addNode(new NodeV(100,400));//1
 		g.addNode(new NodeV(200,700));//2
 		g.addNode(new NodeV(400,500));//3
@@ -52,16 +52,17 @@ public class checkGUI {
 		g.connect(5,4,5.0);
 		
 		
+		
 		ga.init(g);
-//		List<Integer> listar = new ArrayList<Integer>();
-//		listar.add(0);
-//		listar.add(1);
-//		listar.add(2);
-		
-//		List<node_data> a =ga.TSP(listar);
-//		System.out.println(a.toString());
-		Graph_GUI wind = new Graph_GUI(g);				
-		
+////		List<Integer> listar = new ArrayList<Integer>();
+////		listar.add(0);
+////		listar.add(1);
+////		listar.add(2);
+//		
+////		List<node_data> a =ga.TSP(listar);
+////		System.out.println(a.toString());
+	Graph_GUI wind = new Graph_GUI(g);				
+//		
 		wind.setVisible(true);
 		
 	

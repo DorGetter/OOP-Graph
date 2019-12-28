@@ -13,12 +13,11 @@ public class NodeV implements node_data, Serializable {
     ////////////////////////////////////////////
 	static int id =0;
 	int my_id =0;
-	int prev_id = (int) Double.MAX_VALUE;
 	Point3D point;
 	double weight=0;
-	int tag = 0; 
+	int tag = 0;
     /////////////////////////////////////////////////////////////////
-    ///////////////////     Constructor     /////////////////////////
+    ///////////////////     Constructors    /////////////////////////
     /////////////////////////////////////////////////////////////////
 	public NodeV(int x , int y, double w) {
 		this.point = new Point3D(x,y);
@@ -26,7 +25,6 @@ public class NodeV implements node_data, Serializable {
 		my_id =id++;
 		
 	}
-	
 	
 	public NodeV(int x , int y) {
 		this.point = new Point3D(x,y);
@@ -49,64 +47,75 @@ public class NodeV implements node_data, Serializable {
     ///////////////////////////////////////////////////////////////////////////
     ////////////////////////////       methods        /////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-	
+	/**
+	 * returns the node ID
+	 */
 	@Override
 	public int getKey() {
 		return this.my_id;
 	}
-
+/**
+ * Gets the location : x & y as Point 3D. 
+ */
 	@Override
 	public Point3D getLocation() {	
 		return this.point;
 	}
-
+/**
+ * Given 3D point sets the vertex coordinates.
+ */
 	@Override
 	public void setLocation(Point3D p) {
 		this.point = new Point3D(p);
 	}
-
+/**
+ * returns the vertex weight.
+ */
 	@Override
 	public double getWeight() {
 		return this.weight;
 	}
-
+/**
+ * sets the vertex weight.
+ */
 	@Override
 	public void setWeight(double w) {
 		this.weight = w;	
 	}
-
+/**
+ * returns the vertex info. 
+ */
 	@Override
 	public String getInfo() {
 		return "("+point.toString()+")";
 	}
-
+/**
+ * sets the vertex info.
+ */
 	@Override
 	public void setInfo(String s) {
 		
-		
+		id = Integer.parseInt(s);
 	}
-
+/**
+ * returns the vertex tag status. 
+ */
 	@Override
 	public int getTag() {
 		
 		return tag;
 	}
-
-	//start with 0||1 setting tag start 2 || set prev; 
+/**
+ * sets the tag of the vertex 
+ * // 0 = unvisited || 1 = visited
+ */
 	@Override
-	public void setTag(int t) {// 0 = unvisited || 1 = visited || ..... 4 ||
+	public void setTag(int t) {
 		
 		if(t<0 || t>4) {
 			return;
 		}
 		this.tag = t;	
-	}
-	
-	public void setPrev_Id(int id) {
-		this.prev_id = id;
-	}
-	public int getPrev_Id() {
-		return this.prev_id;
 	}
 
 }
