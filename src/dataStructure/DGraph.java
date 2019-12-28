@@ -24,12 +24,29 @@ import elements.NodeV;
  */
 
 public class DGraph implements graph, Serializable{
+
+	////////////////////////////////////////////
+	//////////////    fields     ///////////////
+	////////////////////////////////////////////
+
 	private static final long serialVersionUID = 4L;
 	// contains all the vertexes by ID and weight.
 	HashMap<Integer,node_data> vertex = new HashMap<Integer, node_data>();;
 	// contains all the edges by ID(src ver) and edge_data. 
 	HashMap<Integer, HashMap<Integer, edge_data>> edges = new HashMap<Integer, HashMap<Integer, edge_data>>();
 	int mc =0;
+	
+	
+	/////////////////////////////////////////////////////////////////
+	///////////////////     Constructor     /////////////////////////
+	/////////////////////////////////////////////////////////////////
+	
+	public DGraph() {}
+
+
+	///////////////////////////////////////////////////////////////////////////
+	////////////////////////////       methods        /////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 
 
 	/**
@@ -65,7 +82,7 @@ public class DGraph implements graph, Serializable{
 		else {
 			vertex.put(n.getKey(), n);
 		}
-		
+
 		mc = n.getKey();
 	}
 	/**
@@ -95,17 +112,17 @@ public class DGraph implements graph, Serializable{
 		}
 		//mc++;
 	}
-/**
- * returns all the vertexes as a collection; 
- */
+	/**
+	 * returns all the vertexes as a collection; 
+	 */
 	@Override
 	public Collection<node_data> getV() {
 		Collection<node_data> v = vertex.values();
 		return (Collection<node_data>) v;
 	}
-/**
- * returns all the edged for a vertex as a collection;
- */
+	/**
+	 * returns all the edged for a vertex as a collection;
+	 */
 	@Override
 	public Collection<edge_data> getE(int node_id) {
 
@@ -117,9 +134,9 @@ public class DGraph implements graph, Serializable{
 			return (Collection<edge_data>) e;
 		}
 	}
-/**
- * remove the node itself and all the edges associated with it; 
- */
+	/**
+	 * remove the node itself and all the edges associated with it; 
+	 */
 	@Override
 	public node_data removeNode(int key) {
 		//existance??
@@ -138,10 +155,10 @@ public class DGraph implements graph, Serializable{
 		return removed;
 
 	}
-/**
- * Side method to remove all the edges from a wished node to remove. 
- * @param key
- */
+	/**
+	 * Side method to remove all the edges from a wished node to remove. 
+	 * @param key
+	 */
 	private void remove_from_edges(int key) {
 		Set setMapKey = vertex.keySet();
 		Iterator hit = setMapKey.iterator();
@@ -160,9 +177,9 @@ public class DGraph implements graph, Serializable{
 			}
 		}
 	}
-/**
- * Removes the edge from src --> dest; 
- */
+	/**
+	 * Removes the edge from src --> dest; 
+	 */
 	@Override
 	public edge_data removeEdge(int src, int dest) {
 		if(edges.containsKey(src)&& edges.get(src).containsKey(dest)) {
@@ -173,33 +190,33 @@ public class DGraph implements graph, Serializable{
 		}
 		return null;
 	}
-/**
- * return how many vertexes are in the graph; 
- */
+	/**
+	 * return how many vertexes are in the graph; 
+	 */
 	@Override
 	public int nodeSize() {
 		return vertex.size();
 	}
-/**
- * return how many edges are in graph; 
- */
+	/**
+	 * return how many edges are in graph; 
+	 */
 	@Override
 	public int edgeSize() {
-		
+
 		Set keyMap = edges.keySet();
 		Iterator v = keyMap.iterator();
 		int sum = 0;
-		
+
 		while(v.hasNext()) {
 			HashMap<Integer, edge_data> temp = edges.get(v.next());
 			sum+= temp.size();
 		}
-		
+
 		return sum;
 	}
-/**
- * returns the version number; 
- */
+	/**
+	 * returns the version number; 
+	 */
 	@Override
 	public int getMC() {
 		return mc;
