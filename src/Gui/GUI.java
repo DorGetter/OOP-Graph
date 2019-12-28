@@ -52,7 +52,7 @@ import java.lang.*;
 import java.text.DecimalFormat;
 
 
-public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
+public class GUI extends JFrame implements ActionListener, MouseListener {
 
 	private static final Graphics Graphics = null;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
@@ -83,7 +83,7 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 	/////////////////////////   Constructor  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	//////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-	public Graph_GUI(graph dg)
+	public GUI(graph dg)
 	{
 		initGUI();
 		this.vertex	= dg.getV();
@@ -270,6 +270,8 @@ public class Graph_GUI extends JFrame implements ActionListener, MouseListener {
 				node_data f =path.get(j);
 				g.setColor(Color.YELLOW);
 				g.drawOval(s.getLocation().ix(), s.getLocation().iy(), 2,2);
+				g.setColor(Color.BLACK);	
+				g.drawString("egde:"+i,(((s.getLocation().ix()*1)/5)+f.getLocation().ix()*4)/5 ,(s.getLocation().iy()*1)/5+(f.getLocation().iy()*4)/5);
 				g.setColor(Color.BLACK);
 				if(i==0) {g.drawString("Start",s.getLocation().ix(), s.getLocation().iy());}
 				g.setColor(Color.GREEN);

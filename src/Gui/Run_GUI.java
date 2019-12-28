@@ -15,15 +15,29 @@ import dataStructure.graph;
 import dataStructure.node_data;
 import elements.NodeV;
 
-public class checkGUI {
+public class Run_GUI {
 
 	public static void main(String[] args) {
+		
+		
+		graph g =graphGenerator();
+
+		GUI wind = new GUI(g);						
+		wind.setVisible(true);
+		
+		
+		
+
+	}
+
+	private static graph graphGenerator() {
+		
+		//creating the defualt graph;;
 		DGraph g = new DGraph();
 		Graph_Algo ga= new Graph_Algo();
 		double start = 0;
 		double end = 100;
-		
-		
+		g.addNode(new NodeV(100,100));//0
 		g.addNode(new NodeV(100,400));//1
 		g.addNode(new NodeV(200,700));//2
 		g.addNode(new NodeV(400,500));//3
@@ -50,26 +64,8 @@ public class checkGUI {
 		g.connect(2,8,5.0);
 		g.connect(9,7,5.0);
 		g.connect(5,4,5.0);
-		
-		
-		
 		ga.init(g);
-////		List<Integer> listar = new ArrayList<Integer>();
-////		listar.add(0);
-////		listar.add(1);
-////		listar.add(2);
-//		
-////		List<node_data> a =ga.TSP(listar);
-////		System.out.println(a.toString());
-	Graph_GUI wind = new Graph_GUI(g);				
-//		
-		wind.setVisible(true);
-		
-	
-
-
-
-
+		return g;
 	}
 
 
