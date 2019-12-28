@@ -412,6 +412,7 @@ public class Graph_Algo implements graph_algorithms{
 				for ( int k = 0; k < a.size(); k++) {  //add the path of ti-->ti+1 + t1--------->ti-1;
 					if(arr.size() != 0 && arr.get(arr.size()-1).getKey() == a.get(k).getKey() ) {continue;}
 					arr.add(a.get(k));
+
 				}
 			}
 			

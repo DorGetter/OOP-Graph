@@ -202,18 +202,23 @@ public class DGraph implements graph, Serializable{
 	 */
 	@Override
 	public int edgeSize() {
-
-		Set keyMap = edges.keySet();
-		Iterator v = keyMap.iterator();
-		int sum = 0;
-
-		while(v.hasNext()) {
-			HashMap<Integer, edge_data> temp = edges.get(v.next());
-			sum+= temp.size();
+		
+		int sum =0;
+		
+		Set mapSet = vertex.keySet();
+		Iterator hit = mapSet.iterator();
+		
+		while (hit.hasNext()) {
+			
+			Collection<edge_data> e = getE((int)hit.next());
+			if(e== null) continue;
+			sum+=e.size();
 		}
-
+		
 		return sum;
+		
 	}
+
 	/**
 	 * returns the version number; 
 	 */
