@@ -149,7 +149,21 @@ public class DGraph implements graph{
 
 	@Override
 	public int edgeSize() {
-		return edges.size();
+		
+		int sum =0;
+		
+		Set mapSet = vertex.keySet();
+		Iterator hit = mapSet.iterator();
+		
+		while (hit.hasNext()) {
+			
+			Collection<edge_data> e = getE((int)hit.next());
+			if(e== null) continue;
+			sum+=e.size();
+		}
+		
+		return sum;
+		
 	}
 
 	@Override

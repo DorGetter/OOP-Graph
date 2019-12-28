@@ -196,7 +196,7 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-
+		
 		HashMap<Integer, List<node_data>> keep_score = new HashMap<Integer, List<node_data>>();
 		Iterator hit = targets.iterator();
 		while(hit.hasNext()) {
@@ -209,7 +209,7 @@ public class Graph_Algo implements graph_algorithms{
 				keep_score.put(tar, null);
 				int count =0;
 				for (int j = 0; j < targets.size(); j++) {
-					try {
+					try {/// Need to add -  the check sum of the dijustra and not the size!!
 					if(temp.contains(g.getNode(targets.get(i)))) {
 						count++;
 					}}catch (NullPointerException e) {}
