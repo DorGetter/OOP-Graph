@@ -11,7 +11,8 @@ this program can creates a directional graphs and support the following function
 5. Add / remove vertexs or edges on a given graph.
 
 Example:
--PIC-
+![image](https://user-images.githubusercontent.com/57187365/71545996-ac431000-299a-11ea-9c6f-03be738ef2ed.png)
+
 
 The project is build from the following classes:
 
