@@ -6,7 +6,9 @@ this program can creates a directional graphs and support the following function
 
 1. calculating least cost valued pathes between two vertexes.
 2. presents cost value of the shortest path between two (or multiple vertexes as targets). 
-3. Gui using jframe to visialize the graph and use all the functionality from the Gui.
+3. GUI using jframe to visialize the graph and use all the functionality from the GUI.
+4. Can creat a graph on GUI, save or load graphs.
+5. Add / remove vertexs or edges on a given graph.
 
 Example:
 -PIC-
