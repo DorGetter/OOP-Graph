@@ -126,6 +126,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		MenuItem Load = new MenuItem("Load"); 
 		Load.addActionListener(this);
 
+		//creating a item in bar for clean graph
+		MenuItem clean_all = new MenuItem("clean all"); 
+		clean_all.addActionListener(this);
+
 		//creating a item in bar for short path
 		MenuItem Shortest_Path = new MenuItem("Short Path"); 
 		Shortest_Path.addActionListener(this);
@@ -151,6 +155,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		//file
 		menu_file1.add(Save);
 		menu_file1.add(Load);
+		menu_file1.add(clean_all);
+
 
 		//algorithems
 		menu_file2.add(is_connected);
@@ -181,6 +187,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 			action =0;
 		}
+
+
+		if (this.graph== null) {
+			DGraph gra= new DGraph();
+			this.graph = gra;
+			this.vertex	= gra.getV();
+			action =0;
+			repaint();
+		}
+
 		this.setBackground(Color.WHITE);
 
 		g.setColor(Color.blue);
@@ -602,109 +618,116 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 
 
-	///////////////////////////////////////////////
-	//////////////// Delete Edge  \\\ \\\\\\\\\\\\\\
-	////////////////////////////////////////////////
+		///////////////////////////////////////////////
+		//////////////// Delete Edge  \\\ \\\\\\\\\\\\\\
+		////////////////////////////////////////////////
 
-	else if(e.getActionCommand() == ("Delete Edge")) {
+		else if(e.getActionCommand() == ("Delete Edge")) {
 
-		JFrame f= null ;
-
-
-		int src=0;		int Dest=0;		boolean flag = true;
-		String temp1=""; 	
+			JFrame f= null ;
 
 
-
-		while (flag==true) {
-
-			temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
-			if(temp1.matches("\\d+")) {
-
-				src =Integer.parseInt(temp1);	
-				if(graph.getNode(src)!=null) {flag=false; continue;}
-			}
-			System.out.println("src Not Valid");
-		}flag =true;
+			int src=0;		int Dest=0;		boolean flag = true;
+			String temp1=""; 	
 
 
-		while (flag==true) {
 
-			temp1 	= JOptionPane.showInputDialog(f,"Enter Dest ID: ");
-			if(temp1.matches("\\d+")) {
+			while (flag==true) {
 
-				Dest =Integer.parseInt(temp1);	
-				if(graph.getNode(Dest)!=null) {flag=false; continue;}
-			}
-			System.out.println("dest Not Valid");
-		}flag =true;
+				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
+				if(temp1.matches("\\d+")) {
 
-		
-		graph.removeEdge(src, Dest);
+					src =Integer.parseInt(temp1);	
+					if(graph.getNode(src)!=null) {flag=false; continue;}
+				}
+				System.out.println("src Not Valid");
+			}flag =true;
 
-		repaint();
 
+			while (flag==true) {
+
+				temp1 	= JOptionPane.showInputDialog(f,"Enter Dest ID: ");
+				if(temp1.matches("\\d+")) {
+
+					Dest =Integer.parseInt(temp1);	
+					if(graph.getNode(Dest)!=null) {flag=false; continue;}
+				}
+				System.out.println("dest Not Valid");
+			}flag =true;
+
+
+			graph.removeEdge(src, Dest);
+
+			repaint();
+
+		}
+
+
+		///////////////////////////////////////////////
+		//////////////// Delete Vertex \\\\\\\\\\\\\\\\\
+		////////////////////////////////////////////////
+		else if(e.getActionCommand() == ("Delete Vertex")) {
+
+			JFrame f= null ;
+
+
+			int src=0;	boolean flag = true;
+			String temp1=""; 	
+
+
+			while (flag==true) {
+
+				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
+				if(temp1.matches("\\d+")) {
+
+					src =Integer.parseInt(temp1);	
+					if(graph.getNode(src)!=null) {flag=false; continue;}
+				}
+				System.out.println("src Not Valid");
+			}flag =true;
+
+
+
+			flag=false;
+			graph.removeNode(src);
+
+			repaint();
+
+		}
+
+		else if(e.getActionCommand() == ("clean all")) {
+
+			action=0; 
+			this.graph = null;
+			repaint();
+
+		}
 	}
 
+	private graph init(String file_name) {
 
-	///////////////////////////////////////////////
-	//////////////// Delete Vertex \\\\\\\\\\\\\\\\\
-	////////////////////////////////////////////////
-	else if(e.getActionCommand() == ("Delete Vertex")) {
+		graph temp = null;
+		try
+		{    
+			FileInputStream file = new FileInputStream(file_name); 
+			ObjectInputStream in = new ObjectInputStream(file);
+			temp = (graph)in.readObject(); 
+			in.close(); 
+			file.close();
+			System.out.println("Object has been deserialized");
+			return temp;
+		}    
+		catch(IOException ex) 
+		{ 
+			System.out.println("IOException is caught"); 
+		} 
 
-		JFrame f= null ;
-
-
-		int src=0;	boolean flag = true;
-		String temp1=""; 	
-
-
-		while (flag==true) {
-
-			temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
-			if(temp1.matches("\\d+")) {
-
-				src =Integer.parseInt(temp1);	
-				if(graph.getNode(src)!=null) {flag=false; continue;}
-			}
-			System.out.println("src Not Valid");
-		}flag =true;
-		
-
-
-		flag=false;
-		graph.removeNode(src);
-
-		repaint();
-
+		catch(ClassNotFoundException ex) 
+		{ 
+			System.out.println("ClassNotFoundException is caught"); 
+		} 
+		return null;
 	}
-
-}
-
-private graph init(String file_name) {
-
-	graph temp = null;
-	try
-	{    
-		FileInputStream file = new FileInputStream(file_name); 
-		ObjectInputStream in = new ObjectInputStream(file);
-		temp = (graph)in.readObject(); 
-		in.close(); 
-		file.close();
-		System.out.println("Object has been deserialized");
-		return temp;
-	}    
-	catch(IOException ex) 
-	{ 
-		System.out.println("IOException is caught"); 
-	} 
-
-	catch(ClassNotFoundException ex) 
-	{ 
-		System.out.println("ClassNotFoundException is caught"); 
-	} 
-	return null;
-}
 
 
 
