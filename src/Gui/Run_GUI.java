@@ -19,14 +19,27 @@ public class Run_GUI {
 
 	public static void main(String[] args) {
 		
+		//creates the default graph. 
+		graph g = new DGraph(); 
 		
-		graph g =graphGenerator();
+		g=graphGenerator();  
 
+		/**
+		 * ************************************************************************
+		 * ************************************************************************
+			**for adding a new graph manually please insert you're code below: ****
+		 	**for convenience graph 'g' is already initialized. 	***************
+		 	**g.addNode - adding a vertex , g.connect - adding an edge ************
+		 	***********************************************************************
+		 	***********************************************************************
+			
+		*/
+		
+		
+		
+		//set visibility: 
 		GUI wind = new GUI(g);						
 		wind.setVisible(true);
-		
-		
-		
 
 	}
 
