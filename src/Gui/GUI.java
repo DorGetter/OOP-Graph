@@ -10,6 +10,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Label;
 import java.awt.Menu;
@@ -36,6 +37,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.plaf.basic.BasicTreeUI.MouseHandler;
@@ -98,7 +101,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	private void initGUI() {
 
 		this.setSize(900,900);
-
 		this.setBackground(Color.WHITE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -188,7 +190,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			node_data counterV = new NodeV();
 			int last_node_id = graph.getMC()+1;
 			counterV.setInfo(""+last_node_id);
-
 			action =0;
 		}
 
@@ -207,10 +208,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 		//call paint func\\
 		super.paint(g);
-
-
 		Iterator hit = vertex.iterator();
-		int [][] points_save = new int [vertex.size()][vertex.size()]; 
 
 
 		while(hit.hasNext()) {
@@ -349,9 +347,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			}
 		}
 
-		if(this.graph!=null) {
-			this.setSize(min_x+100,min_y+100);
-		}	
+		if(this.graph!=null) {	this.setSize(min_x+100,min_y+100);	}	
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -601,26 +597,26 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 
 			try {
-			while (flag==true) {
+				while (flag==true) {
 
-				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
-				if(temp1.matches("\\d+")) { src =Integer.parseInt(temp1);	
-				if(graph.getNode(src)!=null) {flag=false; continue;}
-				}System.out.println("src Not Valid");
-			}flag =true;
+					temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
+					if(temp1.matches("\\d+")) { src =Integer.parseInt(temp1);	
+					if(graph.getNode(src)!=null) {flag=false; continue;}
+					}System.out.println("src Not Valid");
+				}flag =true;
 
 
-			while (flag==true) {
-				temp1 	= JOptionPane.showInputDialog(f,"Enter Dest ID: ");
-				if(temp1.matches("\\d+")) {
-					Dest =Integer.parseInt(temp1);	
-					if(graph.getNode(Dest)!=null) {flag=false; continue;}
-				}
-				System.out.println("dest Not Valid");
-			}flag =true;
-			graph.removeEdge(src, Dest);
+				while (flag==true) {
+					temp1 	= JOptionPane.showInputDialog(f,"Enter Dest ID: ");
+					if(temp1.matches("\\d+")) {
+						Dest =Integer.parseInt(temp1);	
+						if(graph.getNode(Dest)!=null) {flag=false; continue;}
+					}
+					System.out.println("dest Not Valid");
+				}flag =true;
+				graph.removeEdge(src, Dest);
 
-			repaint();
+				repaint();
 			}catch (Exception ex) {;}
 
 		}

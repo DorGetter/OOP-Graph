@@ -49,27 +49,27 @@ import elements.NodeV;
  */
 public class Graph_Algo implements graph_algorithms{
 
-	
-	
-    ////////////////////////////////////////////
-    //////////////    fields     ///////////////
-    ////////////////////////////////////////////
+
+
+	////////////////////////////////////////////
+	//////////////    fields     ///////////////
+	////////////////////////////////////////////
 	graph g;
 
 
-    /////////////////////////////////////////////////////////////////
-    ///////////////////     Constructor     /////////////////////////
-    /////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
+	///////////////////     Constructor     /////////////////////////
+	/////////////////////////////////////////////////////////////////
 	public Graph_Algo() {}
 	@Override
 	public void init(graph g) {
 		this.g = g;	
 	}
-	
-    ///////////////////////////////////////////////////////////////////////////
-    ////////////////////////////       methods        /////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-	
+
+	///////////////////////////////////////////////////////////////////////////
+	////////////////////////////       methods        /////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Initialized graph from file
 	 * @param g
@@ -77,70 +77,70 @@ public class Graph_Algo implements graph_algorithms{
 	@Override
 	public void init(String file_name) {
 		graph temp = null;
-        try
-        {    
-            FileInputStream file = new FileInputStream(file_name); 
-            ObjectInputStream in = new ObjectInputStream(file);
-            temp = (graph)in.readObject(); 
-            this.init(temp);
-            in.close(); 
-            file.close();
-            System.out.println("Object has been deserialized");
-        }    
-        
-        catch(IOException ex) 
-        {     System.out.println("IOException is caught");} 
-          
-        catch(ClassNotFoundException ex) 
-        {    System.out.println("ClassNotFoundException is caught");} 
+		try
+		{    
+			FileInputStream file = new FileInputStream(file_name); 
+			ObjectInputStream in = new ObjectInputStream(file);
+			temp = (graph)in.readObject(); 
+			this.init(temp);
+			in.close(); 
+			file.close();
+			System.out.println("Object has been deserialized");
+		}    
+
+		catch(IOException ex) 
+		{     System.out.println("IOException is caught");} 
+
+		catch(ClassNotFoundException ex) 
+		{    System.out.println("ClassNotFoundException is caught");} 
 
 	}
-/**
- * The Method received a String name and save the graph OBJ 
- * in given name; 
- * @param file_name: Name of the file wished to save in.
- */
+	/**
+	 * The Method received a String name and save the graph OBJ 
+	 * in given name; 
+	 * @param file_name: Name of the file wished to save in.
+	 */
 	@Override
 	public void save(String file_name) {
 		//holds the wished name to save by;
-        String filename = file_name; 
-          
-        try
-        {    
-            FileOutputStream file = new FileOutputStream(filename); //writing data to file;  
-            ObjectOutputStream out = new ObjectOutputStream(file);  //serilaze the object to the file
-            out.writeObject(this.g); 
-            out.close();   file.close(); 
-            System.out.println("Object has been serialized"); 
-        }   
-        catch(IOException ex) 
-        {   System.out.println("IOException is caught");} 
+		String filename = file_name; 
+
+		try
+		{    
+			FileOutputStream file = new FileOutputStream(filename); //writing data to file;  
+			ObjectOutputStream out = new ObjectOutputStream(file);  //serilaze the object to the file
+			out.writeObject(this.g); 
+			out.close();   file.close(); 
+			System.out.println("Object has been serialized"); 
+		}   
+		catch(IOException ex) 
+		{   System.out.println("IOException is caught");} 
 	}
-	
-	
-/**
- * 			This method checks if a graph is "Strongly connected".
- * Strong Connected Directed Graph definition:  
- * 		A directed graph is called strongly connected if there is a path
- *  	between each pair of vertices of the graph.
- * 
- * 
- * Using BFS algorithm the function checks if between random points of the graph
- * there is a path ad in which all vertexes have been visited. 
- * . 
- * if all vertexes been visited it returns true;   
- */
+
+
+	/**
+	 * 			This method checks if a graph is "Strongly connected".
+	 * Strong Connected Directed Graph definition:  
+	 * 		A directed graph is called strongly connected if there is a path
+	 *  	between each pair of vertices of the graph.
+	 * 
+	 * 
+	 * Using BFS algorithm the function checks if between random points of the graph
+	 * there is a path ad in which all vertexes have been visited. 
+	 * . 
+	 * if all vertexes been visited it returns true;   
+	 */
 	@Override
 	public boolean isConnected() {
 		Collection<node_data> vertex = g.getV();
 		if(BFS(vertex)) { Collection<node_data> reverse_vertex = rev_collection(vertex.toArray());	return BFS(reverse_vertex);	}
 		return false;
 	}
-/**
- * This method reverse a given Collection. 
- * @param array Obj array; 
- * @return reverse node_data Collection.  
- */
+	/**
+	 * This method reverse a given Collection. 
+	 * @param array Obj array; 
+	 * @return reverse node_data Collection.  
+	 */
 	private Collection<node_data> rev_collection(Object [] array) {
 
 		Collection<node_data> rev = new ArrayList<node_data>();
@@ -148,21 +148,21 @@ public class Graph_Algo implements graph_algorithms{
 			rev.add((node_data) array[i]);}
 		return rev;
 	}
-/**
- * Breath First search: 
- * 
- * 
- * In given Collection of vertexes from a given graph,
- * the algorithem  will check if the graph is strongly Connected.
- * Breadth first search is a graph traversal algorithm that starts traversing the graph from random node and explores
- * all the neighboring nodes. Then, it selects the nearest node and explore all the unexplored nodes. 
- * The algorithm follows the same process for each of the nearest node using a queue until queue is empty which indicates all the neighboring 
- * that are connected to the random first node are connected by path. 
- * then using a 'check_all_visited' method check if all vertexes marked visited. 
- * 
- * @param vertex collections of vertexes of the graph.
- * @return boolean , true: if all vertexes been visited, false otherwise;  
- */
+	/**
+	 * Breath First search: 
+	 * 
+	 * 
+	 * In given Collection of vertexes from a given graph,
+	 * the algorithem  will check if the graph is strongly Connected.
+	 * Breadth first search is a graph traversal algorithm that starts traversing the graph from random node and explores
+	 * all the neighboring nodes. Then, it selects the nearest node and explore all the unexplored nodes. 
+	 * The algorithm follows the same process for each of the nearest node using a queue until queue is empty which indicates all the neighboring 
+	 * that are connected to the random first node are connected by path. 
+	 * then using a 'check_all_visited' method check if all vertexes marked visited. 
+	 * 
+	 * @param vertex collections of vertexes of the graph.
+	 * @return boolean , true: if all vertexes been visited, false otherwise;  
+	 */
 	public boolean BFS(Collection<node_data> vertex) {
 
 		Queue<node_data> q = new LinkedList<node_data>();
@@ -176,7 +176,7 @@ public class Graph_Algo implements graph_algorithms{
 		q.add(a);	//adds it to queue 
 
 		while(!q.isEmpty()) {
-			
+
 			node_data first_out = q.remove(); //dequeue the first in queue. 
 			Collection<edge_data> e = g.getE(first_out.getKey()); //getting all the neighboring.
 			if(e == null) {return false;} //if there are no edges coming out return false (indicates the graph cannot be connected).   
@@ -192,11 +192,11 @@ public class Graph_Algo implements graph_algorithms{
 		}
 		return check_all_visited(vertex); //checks the tag on all vertexes. 
 	}
-/**
- * In given node_data Collection iterates all vertexes and validate all tags marked as visited (visited==1). 
- * @param vertex
- * @return true: all marked 1 , false: if at least one vertex tag 0 ;
- */
+	/**
+	 * In given node_data Collection iterates all vertexes and validate all tags marked as visited (visited==1). 
+	 * @param vertex
+	 * @return true: all marked 1 , false: if at least one vertex tag 0 ;
+	 */
 	private boolean check_all_visited(Collection<node_data> vertex) {
 
 		Iterator idc = vertex.iterator();
@@ -206,41 +206,41 @@ public class Graph_Algo implements graph_algorithms{
 		}
 		return true;
 	}
-/**
- * Iterates Over all vertexes and set tag to 0; (unvisited);
- * @param vertex
- */
+	/**
+	 * Iterates Over all vertexes and set tag to 0; (unvisited);
+	 * @param vertex
+	 */
 	private void all_Zero(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
 		while(tau.hasNext()) {node_data check = (node_data) tau.next();	check.setTag(0);}
 	}
-/**
- * Iterates Over all vertexes and set weight to infinity; (unvisited);
- * @param vertex
- */
+	/**
+	 * Iterates Over all vertexes and set weight to infinity; (unvisited);
+	 * @param vertex
+	 */
 	private void all_inf(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
 		while(tau.hasNext()) {	node_data check = (node_data) tau.next();	check.setWeight(Double.MAX_VALUE);}
 	}
-/**
- * Dijkstra:
- * Given a graph and a source vertex in the graph, find shortest paths from source to all vertices in the given graph.
- * Base:
- * setting all vertexes weight to INF and tag them 0 - Unvisited; 
- * --------------------------------------------------------------
- * Algo: 
- * Extract the first src node and set his weight to 0 (The cost of path from src to src is zero); 
- * Using a Min heap add src to heap; 
- * 
- * The Algo Will Resume as followed: 
- * for each iteration the top off the Min heap node will represents the shortest path from src by weight. 
- * the algorithm works as a greedy algorithm which will move forwards in the least "expensive" path until reach the 
- * Destination node. 
- * in the end the shortest path will send to create path method and returns a Array List contained the path itself. 
- * @param src start point.
- * @param dest end point . 
- * @return shortest path between src & dest. 
- */
+	/**
+	 * Dijkstra:
+	 * Given a graph and a source vertex in the graph, find shortest paths from source to all vertices in the given graph.
+	 * Base:
+	 * setting all vertexes weight to INF and tag them 0 - Unvisited; 
+	 * --------------------------------------------------------------
+	 * Algo: 
+	 * Extract the first src node and set his weight to 0 (The cost of path from src to src is zero); 
+	 * Using a Min heap add src to heap; 
+	 * 
+	 * The Algo Will Resume as followed: 
+	 * for each iteration the top off the Min heap node will represents the shortest path from src by weight. 
+	 * the algorithm works as a greedy algorithm which will move forwards in the least "expensive" path until reach the 
+	 * Destination node. 
+	 * in the end the shortest path will send to create path method and returns a Array List contained the path itself. 
+	 * @param src start point.
+	 * @param dest end point . 
+	 * @return shortest path between src & dest. 
+	 */
 	private ArrayList<node_data> Dijkstra(int src, int dest){
 
 		Collection<node_data> vertex = g.getV(); // getting all vertexes. 
@@ -250,23 +250,23 @@ public class Graph_Algo implements graph_algorithms{
 		node_data a = g.getNode(src); //getting the start node. 
 		a.setWeight(0); //set star node path cost to 0; 
 		int counter=0; //Counter usage for stopping condition counts vertexes; 
-		
+
 		MinHeap heap = new MinHeap(); //Will store the least valued path next vertex; 
-		
+
 		HashMap<Integer, Integer> prev_id = new HashMap<Integer, Integer>(); //Will store the previous node in the path. 
-		
+
 		heap.add((node_data) a, 0, a.getKey(),prev_id); //adding the start node to heap; 
 		if(src == dest) { //stoping condition. 
 			return createpath(src,dest,prev_id);
 		}
-		
+
 		while(counter != vertex.size() && !heap.isEmpty()) {
 			node_data pop = heap.pop(); //pop the least valued path node. 
 			if(pop.getTag()==1) {continue;}	//if visited already just continue;
 			pop.setTag(1); // visited pop
-			
+
 			if(pop.getKey() == dest) {counter = vertex.size(); continue;} //another stopping condition.(reached destination) 
-			
+
 			Collection<edge_data> e = g.getE(pop.getKey());		
 			if(e==null) {continue;}
 			Iterator<edge_data> edges =  e.iterator(); 
@@ -282,17 +282,17 @@ public class Graph_Algo implements graph_algorithms{
 
 		return createpath(src,dest,prev_id); //rearrange the order of the path from end-->start to start-->end; 
 	}
-/**
- * 
- * iterates from destination node backwards by using the prev_id to determine the 
- * father of the node in the path. 
- * when its reaches src as the prev_id it returns the path as Array List of Node_data; 
- * 
- * @param src
- * @param dest
- * @param prev_id data structure to hold the father of a node in a path. 
- * @return the path src --> destination
- */
+	/**
+	 * 
+	 * iterates from destination node backwards by using the prev_id to determine the 
+	 * father of the node in the path. 
+	 * when its reaches src as the prev_id it returns the path as Array List of Node_data; 
+	 * 
+	 * @param src
+	 * @param dest
+	 * @param prev_id data structure to hold the father of a node in a path. 
+	 * @return the path src --> destination
+	 */
 	private ArrayList<node_data> createpath(int src,int dest,HashMap<Integer, Integer> prev_id) {
 
 		if(g.getNode(dest).getWeight() == Double.MAX_VALUE) { return null;}
@@ -310,11 +310,11 @@ public class Graph_Algo implements graph_algorithms{
 		path = (ArrayList<node_data>) rev_collection(path.toArray());
 		return path;
 	}
-/**
- * Using a Dijkstra method
- * which creating the shortest path between src --> dest extracting the weight of the path.
- * @return the cost value (double) of the shortest path src --> dest.   
- */
+	/**
+	 * Using a Dijkstra method
+	 * which creating the shortest path between src --> dest extracting the weight of the path.
+	 * @return the cost value (double) of the shortest path src --> dest.   
+	 */
 	@Override
 	public double shortestPathDist(int src, int dest) {	
 
@@ -345,15 +345,15 @@ public class Graph_Algo implements graph_algorithms{
 		if(temp == null ) {
 			return null;
 		}
-		
+
 		Object [] arr = {temp.get(temp.size()-1).getWeight(),temp};
-		
+
 		return arr;
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * 
 	 * Tsp: 
@@ -367,11 +367,11 @@ public class Graph_Algo implements graph_algorithms{
 	 */
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-		
-		if(!this.isConnected()) {return null;}
-		
+
+		if(!checkPathOfTargets(targets)) {return null;}
+
 		double min_path = Double.MAX_VALUE;
-		
+
 		double min_path_temp =-1; //base 
 		Object [] arr_temp; //will hold the path between ti-->ti+1 & cost.	 
 		ArrayList<node_data> arr = new ArrayList<node_data>();	//sum up the path between t1 ----> tn (if exists).
@@ -394,7 +394,7 @@ public class Graph_Algo implements graph_algorithms{
 
 				}
 			}
-			
+
 			if(min_path_temp < min_path && min_path_temp != -1 ) { //checks if the new checked path is least "expensive" than the minimum path stores.
 				min_path = min_path_temp;
 				ans = new ArrayList<node_data>();
@@ -402,21 +402,33 @@ public class Graph_Algo implements graph_algorithms{
 					ans.add(arr.get(j));
 				}
 			}
-			
+
 		}
-		
+
 		if(ans.size() == 0) {return ans;} 
 		return ans;
 	}
 
-	
-/**
- * takes a list and shuffle randomly the elements positions inside
- * @param targets
- * @return rearrange form of targets
- */
-	private List<Integer> shuffleTargets(List<Integer> targets) {
+	/**
+	 * sub method to check if between all targets of tsp there is a path.
+	 * @param targets
+	 * @return if the targets subgraph is strongly connected.
+	 */
+	private boolean checkPathOfTargets(List<Integer> targets) {
+		Collection<node_data> t_check = new ArrayList<node_data>();
+		for (int i = 0; i < targets.size(); i++) {t_check.add(this.g.getNode(targets.get(i))); }
 		
+		if(BFS(t_check)) {return true;}
+		
+		return false;
+	}
+	/**
+	 * takes a list and shuffle randomly the elements positions inside
+	 * @param targets
+	 * @return rearrange form of targets
+	 */
+	private List<Integer> shuffleTargets(List<Integer> targets) {
+
 		int t1 = new Random().nextInt(targets.size()-1);
 		int t2 = new Random().nextInt(targets.size()-1);
 		if(t1==t2)
@@ -426,30 +438,30 @@ public class Graph_Algo implements graph_algorithms{
 				t2 = new Random().nextInt(targets.size()-1);
 			}
 		}
-	
+
 		int temp = targets.get(t1);
 		targets.set(t1, targets.get(t2));
 		targets.set(t2,temp);
-		
+
 		return targets;
 	}
-/**
- * Deep copy method of graph.
- */
+	/**
+	 * Deep copy method of graph.
+	 */
 	@Override
 	public graph copy() {
-		
+
 		graph new_g = new DGraph();
-		
+
 		Collection<node_data> v = g.getV();
 		Iterator v_it = v.iterator();
 		while(v_it.hasNext()) {	
 			node_data new_v = (node_data)v_it.next();
 			new_g.addNode(new_v);
-			
+
 			Collection<edge_data> e = g.getE(new_v.getKey());
 			Iterator e_it = e.iterator();
-			
+
 			while (e_it.hasNext()) {
 				edge_data new_e = (edge_data) e_it.next();
 				new_g.connect(new_e.getSrc(), new_e.getDest(), new_e.getWeight());
@@ -458,8 +470,8 @@ public class Graph_Algo implements graph_algorithms{
 
 		return new_g;
 	}
-	
-	
+
+
 	//|--------------------------------------------------------------------------------------------------------------------------------|
 	//|----------------------------------------------------SUB-CLASS-------------------------------------------------------------------|
 	//|--------------------------------------------------------------------------------------------------------------------------------|
@@ -473,30 +485,30 @@ public class Graph_Algo implements graph_algorithms{
 	 * uses heapyup & heapyfudown for rearranging positions in the tree. 
 	 * 
 	 */
-	
+
 	public class MinHeap{
-		
-		 ////////////////////////////////////////////
-	    //////////////    fields     ///////////////
-	    ////////////////////////////////////////////
-		
-		
+
+		////////////////////////////////////////////
+		//////////////    fields     ///////////////
+		////////////////////////////////////////////
+
+
 		ArrayList<node_data> heap;
 
-		
-		 /////////////////////////////////////////////////////////////////
-	    ///////////////////     Constructor     /////////////////////////
-	    /////////////////////////////////////////////////////////////////
-		
-		
+
+		/////////////////////////////////////////////////////////////////
+		///////////////////     Constructor     /////////////////////////
+		/////////////////////////////////////////////////////////////////
+
+
 		public MinHeap () {
 			heap = new ArrayList<node_data>();}
 
-	    ///////////////////////////////////////////////////////////////////////////
-	    ////////////////////////////       methods        /////////////////////////
-	    ///////////////////////////////////////////////////////////////////////////
-		
-		
+		///////////////////////////////////////////////////////////////////////////
+		////////////////////////////       methods        /////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+
+
 		public void add(node_data v, double w, int prev_id,HashMap<Integer, Integer> prev) {
 
 			if(heap.contains(v)) {
@@ -535,7 +547,7 @@ public class Graph_Algo implements graph_algorithms{
 		}
 
 		public node_data pop() {
-			
+
 			node_data temp = heap.get(0);
 			heap.set(0, heap.get(heap.size()-1));
 			heap.set(heap.size()-1, temp);
@@ -587,14 +599,14 @@ public class Graph_Algo implements graph_algorithms{
 
 				} else return; 
 			}
-			
+
 			if(left<end) 
 			{
 				if(heap.get(left).getWeight() < heap.get(movingindex).getWeight())
-				 {swap(movingindex,left);}
+				{swap(movingindex,left);}
 			}
 		}
-		
+
 		public String toString() {
 			String print = "[";
 			for (int i = 0; i <heap.size(); i++) {
@@ -606,7 +618,7 @@ public class Graph_Algo implements graph_algorithms{
 			print+="]";
 			return print;
 		}
-		
+
 		public boolean isEmpty() {
 			return heap.isEmpty();
 		}

@@ -18,38 +18,102 @@ import elements.NodeV;
 public class Run_GUI {
 
 	public static void main(String[] args) {
-		
+
 		//creates the default graph. 
 		graph g = new DGraph(); 
+
 		
-		g=graphGenerator();
+		/*****************************************************************************
+		 * ***************************************************************************
+		 * for test the graph on 100,000 vertexes and 200,000 edges					**
+		 * 1. uncomment the next line. 												**
+		 * 2. comment the graph generator function. 								**
+		 * 3. RUN																	**
+		 * * (make sure the graph generator below is on comment).					**
+		 * ***************************************************************************
+		 *****************************************************************************/
+		
+		g=test_100k_Vertexes_Edges();
+		
+		/*****************************************************************************
+		 * ***************************************************************************
+		 * Creates a default graph. 												**
+		 * 1. Uncomment the next line (if needed) 									**
+		 * 2. RUN																	**
+		 * * (make sure the test_100k_Vertexes_Edges is on comment). 				**
+		 * ***************************************************************************
+		 *****************************************************************************/
+		
+		//g=graphGenerator();
 		
 
-		/**
-		 * ***************************************************************************
+		/*****************************************************************************
 		 * ***************************************************************************
 		 *	**	for adding a new graph manually please insert you're code below: 	**
 		 *	**	for convenience graph 'g' is already initialized. 					**
 		 *	**	g.addNode - adding a vertex , g.connect - adding an edge 			**
 		 *	**************************************************************************
-		 *	**************************************************************************
-		*/
-		
-		
-		
+		 *****************************************************************************/
+
 		//set visibility: 
 		GUI wind = new GUI(g);						
 		wind.setVisible(true);
 
 	}
 
-	private static graph graphGenerator() {
+	private static graph test_100k_Vertexes_Edges() {
+
+		DGraph g = new DGraph();
+		Graph_Algo ga= new Graph_Algo();
+		int start =0,end=100;
 		
+		
+		
+		int 	random0 		= new Random().nextInt(800 + 70) +70;
+		int 	random1 		= new Random().nextInt(800 + 70) +70;
+		
+		//creates first vertex\\
+		NodeV nodetemp1 		= new NodeV(random0,random1);
+		
+		int key =nodetemp1.getKey();
+		
+		for (int i = 0; i < 50000; i++) {
+
+			System.out.println(i);
+			//create random x,y,weight\\
+			int 	random2 		= new Random().nextInt(800 + 70) +70;
+			int 	random3 		= new Random().nextInt(800 + 70) +70;
+			double	random4 		= new Random().nextInt(50 + 1)   +1;
+			
+			NodeV nodetemp2 		= new NodeV(random2,random3);
+			NodeV nodetemp3 		= new NodeV(random3,random2);
+			
+			g.addNode(nodetemp2);
+			g.addNode(nodetemp3);
+			
+			//0 --> 1
+			g.connect(key				,nodetemp2.getKey(),random3);
+			//1 --> 0
+			g.connect(nodetemp2.getKey(),             	key,random3);
+			//1 --> 2
+			g.connect(nodetemp2.getKey(),nodetemp3.getKey(),random3);
+			//2 -->1
+			g.connect(nodetemp3.getKey(),nodetemp2.getKey(),random3);
+			
+			key=nodetemp3.getKey();
+			
+			
+		}
+		ga.init(g);
+		return g;
+	}
+
+	private static graph graphGenerator() {
+
 		//creating the defualt graph;;
 		DGraph g = new DGraph();
 		Graph_Algo ga= new Graph_Algo();
-		double start = 0;
-		double end = 100;
+
 		g.addNode(new NodeV(100,100));//0
 		g.addNode(new NodeV(100,400));//1
 		g.addNode(new NodeV(200,700));//2
@@ -60,7 +124,7 @@ public class Run_GUI {
 		g.addNode(new NodeV(700,200));//7
 		g.addNode(new NodeV(900,600));//8
 		g.addNode(new NodeV(800,500));//9
-		
+
 		g.connect(0,1,4.0);
 		g.connect(1,2,5.0);
 		g.connect(0,7,50.0);
