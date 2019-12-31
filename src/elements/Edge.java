@@ -15,7 +15,7 @@ public class Edge implements edge_data, Serializable{
 	////////////////////////////////////////////
 	//////////////    fields     ///////////////
 	////////////////////////////////////////////
-	graph g;
+
 	node_data src;
 	node_data dest;
 	double w;
@@ -23,8 +23,9 @@ public class Edge implements edge_data, Serializable{
 	/////////////////////////////////////////////////////////////////
 	///////////////////     Constructor     /////////////////////////
 	/////////////////////////////////////////////////////////////////
-	public Edge(node_data src, node_data dest, double w,graph g) {
-		this.g = g;
+	public Edge() {} 
+	public Edge(node_data src, node_data dest, double w) {
+	
 		this.src = src; 
 		this.dest	 = dest; 
 		this.w	=w;
@@ -67,41 +68,7 @@ public class Edge implements edge_data, Serializable{
 	}
 	///////////////////////////////////////////////////////
 	@Override
-	public void setInfo(String s) {
-
-		StringTokenizer st1 = new StringTokenizer(s.substring(1, s.length()-2), " ");
-		int counter = 0;
-		
-		try {
-		// Getting all the metadata from the string	
-		int sr	 = Integer.parseInt((String) st1.nextElement());
-		int d	 = Integer.parseInt((String) st1.nextElement());
-		double w = Double.parseDouble((String) st1.nextElement());
-		
-		
-		// Check if src and dest are valid vertex
-		if(g.getNode(sr)==null) {
-			System.out.println("src dosn't exist");
-			return;
-		}
-		if(g.getNode(d)==null) {
-			System.out.println("dest dosn't exist");
-			return;
-		}
-		
-		//Check if graph contain edge src --> des.
-		Collection<edge_data> e = g.getE(sr);
-		if(e != null && e.contains(d)) {
-			System.out.println("Edge alrady exist");
-			return;
-		}
-		}catch (Exception e) {
-			System.out.println("not valid input");
-		}
-		
-		
-		
-	}
+	public void setInfo(String s) {;}
 	////////////////////////////////////////////////////////
 	@Override
 	public int getTag() {

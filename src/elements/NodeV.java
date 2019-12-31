@@ -19,6 +19,7 @@ public class NodeV implements node_data, Serializable {
     /////////////////////////////////////////////////////////////////
     ///////////////////     Constructors    /////////////////////////
     /////////////////////////////////////////////////////////////////
+	
 	public NodeV(int x , int y, double w) {
 		this.point = new Point3D(x,y);
 		this.weight = w;
@@ -40,9 +41,7 @@ public class NodeV implements node_data, Serializable {
 		this.point=new Point3D(point);
 		my_id =id++;
 	}
-	public NodeV() {
-		point = new Point3D(0, 0);
-		my_id =id++;}
+	public NodeV() {point = new Point3D(0, 0);	my_id =id++;}
 	
     ///////////////////////////////////////////////////////////////////////////
     ////////////////////////////       methods        /////////////////////////

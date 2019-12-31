@@ -82,7 +82,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	/////////////////////////   Constructor  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	//////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+	public GUI() {}
 	public GUI(graph dg)
 	{
 		initGUI();
@@ -90,7 +90,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		this.graph = dg;
 		G.init(this.graph);
 	}
-
 
 	/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	/////////////////////////   window settings  \\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -195,11 +194,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 
 		if (this.graph== null) {
-			DGraph gra= new DGraph();
-			this.graph = gra;
-			this.vertex	= gra.getV();
-			action =0;
-			repaint();
+			this.graph = new DGraph();
+			this.G.init(graph);
+			this.vertex	= graph.getV();
+			action =0;	   	 repaint();
 		}
 
 		this.setBackground(Color.WHITE);
@@ -602,7 +600,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			String temp1=""; 	
 
 
-
+			try {
 			while (flag==true) {
 
 				temp1 	= JOptionPane.showInputDialog(f,"Enter src ID: ");
@@ -623,6 +621,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			graph.removeEdge(src, Dest);
 
 			repaint();
+			}catch (Exception ex) {;}
 
 		}
 

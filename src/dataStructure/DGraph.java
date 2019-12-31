@@ -90,6 +90,8 @@ public class DGraph implements graph, Serializable{
 	 */
 	@Override
 	public void connect(int src, int dest, double w) {
+		
+		if(src == dest) {return;}
 		if(vertex.containsKey(src)&&vertex.containsKey(dest)) {
 			//edge existence check 
 			if(edges.containsKey(src) && edges.get(src).containsKey(dest)) {
@@ -99,11 +101,11 @@ public class DGraph implements graph, Serializable{
 			}
 			//if src vertex exist in edges hash , and no dest. 
 			else if(edges.containsKey(src)) {
-				edges.get(src).put(dest, new Edge(vertex.get(src),vertex.get(dest),w,this));
+				edges.get(src).put(dest, new Edge(vertex.get(src),vertex.get(dest),w));
 			}
 			else {
 				edges.put(src, new HashMap<Integer, edge_data>());
-				edges.get(src).put(dest, new Edge(vertex.get(src),vertex.get(dest),w,this));
+				edges.get(src).put(dest, new Edge(vertex.get(src),vertex.get(dest),w));
 			}
 
 		}
