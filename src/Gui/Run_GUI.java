@@ -22,17 +22,17 @@ public class Run_GUI {
 		//creates the default graph. 
 		graph g = new DGraph(); 
 		
-		g=graphGenerator();  
+		g=graphGenerator();
+		
 
 		/**
 		 * ************************************************************************
 		 * ************************************************************************
-			**for adding a new graph manually please insert you're code below: ****
-		 	**for convenience graph 'g' is already initialized. 	***************
-		 	**g.addNode - adding a vertex , g.connect - adding an edge ************
-		 	***********************************************************************
-		 	***********************************************************************
-			
+		 *	**for adding a new graph manually please insert you're code below: ****
+		 *	**for convenience graph 'g' is already initialized. 	***************
+		 *	**g.addNode - adding a vertex , g.connect - adding an edge ************
+		 *	***********************************************************************
+		 *	***********************************************************************
 		*/
 		
 		

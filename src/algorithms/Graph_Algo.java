@@ -28,6 +28,7 @@ import elements.NodeV;
 /**
  * This class holds implementations of graph_algorithems interface.
  * Algorithms: 
+ * -----------
  * 			1.init(file.txt) 	 graph from file.txt.
  * 			2.save			 	 deserialized to graph object from txt file. 
  * 								 and build a new graph from it.
@@ -39,7 +40,7 @@ import elements.NodeV;
  * 
  * 
  *Secondery Algorithems + Methods: 
- *			
+ *----------------------------------			
  * 			1.BFS			 Breath first check algorithm Used to check isConnected.
  * 			2.Dijkstra		 calculate the shortest path between src --> dest.
  * 
@@ -87,15 +88,12 @@ public class Graph_Algo implements graph_algorithms{
             file.close();
             System.out.println("Object has been deserialized");
         }    
+        
         catch(IOException ex) 
-        { 
-            System.out.println("IOException is caught"); 
-        } 
+        {     System.out.println("IOException is caught");} 
           
         catch(ClassNotFoundException ex) 
-        { 
-            System.out.println("ClassNotFoundException is caught"); 
-        } 
+        {    System.out.println("ClassNotFoundException is caught");} 
 
 	}
 /**
@@ -110,19 +108,14 @@ public class Graph_Algo implements graph_algorithms{
           
         try
         {    
-        	
             FileOutputStream file = new FileOutputStream(filename); //writing data to file;  
             ObjectOutputStream out = new ObjectOutputStream(file);  //serilaze the object to the file
             out.writeObject(this.g); 
-            out.close(); 
-            file.close(); 
-              
+            out.close();   file.close(); 
             System.out.println("Object has been serialized"); 
         }   
         catch(IOException ex) 
-        { 
-            System.out.println("IOException is caught"); 
-        } 
+        {   System.out.println("IOException is caught");} 
 	}
 	
 	
@@ -141,10 +134,7 @@ public class Graph_Algo implements graph_algorithms{
 	@Override
 	public boolean isConnected() {
 		Collection<node_data> vertex = g.getV();
-		if(BFS(vertex)) {
-			Collection<node_data> reverse_vertex = rev_collection(vertex.toArray());
-			return BFS(reverse_vertex);
-		}
+		if(BFS(vertex)) { Collection<node_data> reverse_vertex = rev_collection(vertex.toArray());	return BFS(reverse_vertex);	}
 		return false;
 	}
 /**
@@ -156,8 +146,7 @@ public class Graph_Algo implements graph_algorithms{
 
 		Collection<node_data> rev = new ArrayList<node_data>();
 		for (int i = array.length-1; i >= 0; i--) {
-			rev.add((node_data) array[i]);
-		}
+			rev.add((node_data) array[i]);}
 		return rev;
 	}
 /**
@@ -194,14 +183,13 @@ public class Graph_Algo implements graph_algorithms{
 			if(e == null) {return false;} //if there are no edges coming out return false (indicates the graph cannot be connected).   
 			Iterator bgu = e.iterator();
 			while(bgu.hasNext()) {  //iterating over the vertex edges
-				edge_data ed = (Edge) bgu.next(); 
-				int nver = ed.getDest();	//gets the next neighbor. 
+				edge_data ed	= (Edge) bgu.next(); 
+				int nver 		= ed.getDest();	//gets the next neighbor. 
 				if(g.getNode(nver).getTag() == 0) {	//checks if already visited. 
 					g.getNode(nver).setTag(1);	//if not visited set to visited. 
 					q.add(g.getNode(nver));	//add the vertex to the queue. 
 				}
 			}
-
 		}
 		return check_all_visited(vertex); //checks the tag on all vertexes. 
 	}
@@ -215,9 +203,7 @@ public class Graph_Algo implements graph_algorithms{
 		Iterator idc = vertex.iterator();
 		while(idc.hasNext()) {
 			node_data check = (node_data) idc.next();
-			if(check.getTag()==0) {
-				return false;
-			}
+			if(check.getTag()==0)     {return false;}
 		}
 		return true;
 	}
@@ -227,10 +213,7 @@ public class Graph_Algo implements graph_algorithms{
  */
 	private void all_Zero(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
-		while(tau.hasNext()) {
-			node_data check = (node_data) tau.next();
-			check.setTag(0);
-		}
+		while(tau.hasNext()) {node_data check = (node_data) tau.next();	check.setTag(0);}
 	}
 /**
  * Iterates Over all vertexes and set weight to infinity; (unvisited);
@@ -238,10 +221,7 @@ public class Graph_Algo implements graph_algorithms{
  */
 	private void all_inf(Collection<node_data> vertex) {
 		Iterator tau = vertex.iterator();
-		while(tau.hasNext()) {
-			node_data check = (node_data) tau.next();
-			check.setWeight(Double.MAX_VALUE);
-		}
+		while(tau.hasNext()) {	node_data check = (node_data) tau.next();	check.setWeight(Double.MAX_VALUE);}
 	}
 /**
  * Dijkstra:
