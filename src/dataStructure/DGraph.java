@@ -28,21 +28,21 @@ public class DGraph implements graph, Serializable{
 	////////////////////////////////////////////
 	//////////////    fields     ///////////////
 	////////////////////////////////////////////
-
+	
 	private static final long serialVersionUID = 4L;
+	
 	// contains all the vertexes by ID and weight.
 	HashMap<Integer,node_data> vertex = new HashMap<Integer, node_data>();;
+	
 	// contains all the edges by ID(src ver) and edge_data. 
 	HashMap<Integer, HashMap<Integer, edge_data>> edges = new HashMap<Integer, HashMap<Integer, edge_data>>();
 	int mc =0;
-	
 	
 	/////////////////////////////////////////////////////////////////
 	///////////////////     Constructor     /////////////////////////
 	/////////////////////////////////////////////////////////////////
 	
 	public DGraph() {}
-
 
 	///////////////////////////////////////////////////////////////////////////
 	////////////////////////////       methods        /////////////////////////
@@ -90,7 +90,7 @@ public class DGraph implements graph, Serializable{
 	 */
 	@Override
 	public void connect(int src, int dest, double w) {
-		
+		if(w<=0) {System.out.println("weight must be greater then 0");return;}
 		if(src == dest) {return;}
 		if(vertex.containsKey(src)&&vertex.containsKey(dest)) {
 			//edge existence check 

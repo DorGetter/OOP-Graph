@@ -1,10 +1,11 @@
-package algorithms;
+package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import algorithms.Graph_Algo;
 import dataStructure.DGraph;
 import elements.NodeV;
 import static org.junit.Assert.assertEquals;
@@ -135,9 +136,9 @@ class Graph_AlgoTest {
 	@Test
 	void testCopy() {
 		
-	graph e = ga.copy();
+		graph e = ga.copy();
 	
-	
+	System.out.println("");
 	}
 
 }

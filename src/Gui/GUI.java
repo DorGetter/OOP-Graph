@@ -3,14 +3,10 @@ import algorithms.Graph_Algo;
 import algorithms.graph_algorithms;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Label;
 import java.awt.Menu;
@@ -26,36 +22,24 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.plaf.basic.BasicTreeUI.MouseHandler;
-
-import org.omg.CORBA.INITIALIZE;
-
 import dataStructure.DGraph;
 import dataStructure.edge_data;
 import dataStructure.graph;
 import dataStructure.node_data;
 import elements.NodeV;
-import utils.Point3D;
-import java.lang.*;
 import java.text.DecimalFormat;
 
 
-public class GUI extends JFrame implements ActionListener, MouseListener {
+public class GUI extends JFrame implements ActionListener, MouseListener, Runnable {
 
 	private static final Graphics Graphics = null;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
@@ -179,6 +163,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 		//listen to the mouse\\
 		this.addMouseListener(this);
+		
+		
 	}
 
 
@@ -348,6 +334,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				g.drawString("finish", path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy());
 			}
 		}
+		
+		
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -712,6 +700,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		catch(IOException ex) 			 { System.out.println("IOException is caught"); } 
 		catch(ClassNotFoundException ex) {	System.out.println("ClassNotFoundException is caught");	} 
 		return null;
+	}
+	@Override
+	public void run() {
+		repaint();
+		
 	}
 
 

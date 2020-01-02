@@ -1,14 +1,6 @@
 package Gui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import algorithms.Graph_Algo;
 import dataStructure.DGraph;
 import dataStructure.graph;
@@ -33,7 +25,7 @@ public class Run_GUI {
 		 * ***************************************************************************
 		 *****************************************************************************/
 		
-		g=test_100k_Vertexes_Edges();
+		//g=test_100k_Vertexes_Edges();
 		
 		/*****************************************************************************
 		 * ***************************************************************************
@@ -44,7 +36,7 @@ public class Run_GUI {
 		 * ***************************************************************************
 		 *****************************************************************************/
 		
-		//g=graphGenerator();
+		g=graphGenerator();
 		
 
 		/*****************************************************************************
@@ -60,7 +52,6 @@ public class Run_GUI {
 		GUI wind = new GUI(g);						
 		wind.setVisible(true);
 		
-
 	}
 
 	private static graph test_100k_Vertexes_Edges() {
@@ -116,35 +107,22 @@ public class Run_GUI {
 		DGraph g = new DGraph();
 		Graph_Algo ga= new Graph_Algo();
 
-		g.addNode(new NodeV(100,100));//0
-		g.addNode(new NodeV(100,400));//1
-		g.addNode(new NodeV(200,700));//2
-		g.addNode(new NodeV(400,500));//3
-		g.addNode(new NodeV(400,900));//4
-		g.addNode(new NodeV(600,700));//5
-		g.addNode(new NodeV(700,900));//6
-		g.addNode(new NodeV(700,200));//7
-		g.addNode(new NodeV(900,600));//8
-		g.addNode(new NodeV(800,500));//9
-
-		g.connect(0,1,4.0);
-		g.connect(1,2,5.0);
-		g.connect(0,7,50.0);
-		g.connect(3,0,6.0);
-		g.connect(3,2,50.0);
-		g.connect(3,5,1.0);
-		g.connect(4,3,4.0);
-		g.connect(4,6,5.0);
-		g.connect(5,2,50.0);
-		g.connect(6,5,6.0);
-		g.connect(7,3,50.0);
-		g.connect(8,9,1.0);
-		g.connect(9,3,4.0);
-		g.connect(2,8,5.0);
-		g.connect(9,7,5.0);
-		g.connect(5,4,5.0);
-		ga.init(g);
-		return g;
+		g.addNode(new NodeV(100,100));		g.addNode(new NodeV(100,400));
+		g.addNode(new NodeV(200,700));		g.addNode(new NodeV(400,500));
+		g.addNode(new NodeV(400,900));		g.addNode(new NodeV(600,700));
+		g.addNode(new NodeV(700,900));		g.addNode(new NodeV(700,200));
+		g.addNode(new NodeV(900,600));		g.addNode(new NodeV(800,500));
+		
+		g.connect(0,1,4.0);					g.connect(1,2,5.0);
+		g.connect(0,7,50.0);				g.connect(3,0,6.0);
+		g.connect(3,2,50.0);				g.connect(3,5,1.0);
+		g.connect(4,3,4.0);					g.connect(4,6,5.0);
+		g.connect(5,2,50.0);				g.connect(6,5,6.0);
+		g.connect(7,3,50.0);				g.connect(8,9,1.0);
+		g.connect(9,3,4.0);					g.connect(2,8,5.0);
+		g.connect(9,7,5.0);					g.connect(5,4,5.0);
+		
+		ga.init(g);		return g;
 	}
 	
 	private static graph ggg() {
@@ -152,42 +130,28 @@ public class Run_GUI {
 		DGraph graph = new DGraph();
 		Graph_Algo ga= new Graph_Algo();
 		node_data a = new NodeV(100,100);		node_data b =new NodeV(100,400);
-		node_data c =new NodeV(200,700);		node_data d =new NodeV(400,500);
-		node_data e =new NodeV(400,900);		node_data f =new NodeV(600,700);
-		node_data g =new NodeV(700,900);		node_data h =new NodeV(700,200);
-		node_data i =new NodeV(900,600);		node_data j =new NodeV(800,500);
+		node_data c =new NodeV(200,700) ;		node_data d =new NodeV(400,500);
+		node_data e =new NodeV(400,900) ;		node_data f =new NodeV(600,700);
+		node_data g =new NodeV(700,900) ;		node_data h =new NodeV(700,200);
+		node_data i =new NodeV(900,600) ;		node_data j =new NodeV(800,500);
 		
-		graph.addNode(a);
-		graph.addNode(b);
-		graph.addNode(c);
-		graph.addNode(d);
-		graph.addNode(e);
-		graph.addNode(f);
-		graph.addNode(g);
-		graph.addNode(h);
-		graph.addNode(i);
-		graph.addNode(j);
+		graph.addNode(a);						graph.addNode(b);
+		graph.addNode(c);						graph.addNode(d);
+		graph.addNode(e);						graph.addNode(f);
+		graph.addNode(g);						graph.addNode(h);
+		graph.addNode(i);						graph.addNode(j);
 		
 
-		graph.connect(a.getKey(),b.getKey(),4.0);
-		graph.connect(b.getKey(),c.getKey(),5.0);
-		graph.connect(a.getKey(),h.getKey(),50.0);
-		graph.connect(d.getKey(),a.getKey(),6.0);
-		graph.connect(d.getKey(),c.getKey(),50.0);
-		graph.connect(d.getKey(),f.getKey(),1.0);
-		graph.connect(e.getKey(),d.getKey(),4.0);
-		graph.connect(e.getKey(),g.getKey(),5.0);
-		graph.connect(f.getKey(),c.getKey(),50.0);
-		graph.connect(g.getKey(),f.getKey(),6.0);
-		graph.connect(h.getKey(),d.getKey(),50.0);
-		graph.connect(i.getKey(),j.getKey(),1.0);
-		graph.connect(j.getKey(),d.getKey(),4.0);
-		graph.connect(c.getKey(),i.getKey(),5.0);
-		graph.connect(j.getKey(),h.getKey(),5.0);
-		graph.connect(f.getKey(),e.getKey(),5.0);
+		graph.connect(a.getKey(),b.getKey(),4.0);		graph.connect(b.getKey(),c.getKey(),5.0);
+		graph.connect(a.getKey(),h.getKey(),50.0);		graph.connect(d.getKey(),a.getKey(),6.0);
+		graph.connect(d.getKey(),c.getKey(),50.0);		graph.connect(d.getKey(),f.getKey(),1.0);
+		graph.connect(e.getKey(),d.getKey(),4.0);		graph.connect(e.getKey(),g.getKey(),5.0);
+		graph.connect(f.getKey(),c.getKey(),50.0);		graph.connect(g.getKey(),f.getKey(),6.0);
+		graph.connect(h.getKey(),d.getKey(),50.0);		graph.connect(i.getKey(),j.getKey(),1.0);
+		graph.connect(j.getKey(),d.getKey(),4.0);		graph.connect(c.getKey(),i.getKey(),5.0);
+		graph.connect(j.getKey(),h.getKey(),5.0);		graph.connect(f.getKey(),e.getKey(),5.0);
 		
-		ga.init(graph);
-		return graph;
+		ga.init(graph);		return graph;
 		
 		
 	}

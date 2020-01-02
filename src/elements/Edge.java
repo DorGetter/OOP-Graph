@@ -23,9 +23,9 @@ public class Edge implements edge_data, Serializable{
 	/////////////////////////////////////////////////////////////////
 	///////////////////     Constructor     /////////////////////////
 	/////////////////////////////////////////////////////////////////
-	public Edge() {} 
+
 	public Edge(node_data src, node_data dest, double w) {
-	
+		if(w<=0) {System.out.println("weight must be greater then 0");return;}
 		this.src = src; 
 		this.dest	 = dest; 
 		this.w	=w;
@@ -54,7 +54,6 @@ public class Edge implements edge_data, Serializable{
 	 */
 	@Override
 	public double getWeight() {
-
 		return w;
 	}
 	/**

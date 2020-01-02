@@ -103,7 +103,7 @@ public class Graph_Algo implements graph_algorithms{
 	@Override
 	public void save(String file_name) {
 		//holds the wished name to save by;
-		String filename = file_name; 
+		String filename = file_name;
 
 		try
 		{    
@@ -132,6 +132,9 @@ public class Graph_Algo implements graph_algorithms{
 	 */
 	@Override
 	public boolean isConnected() {
+		
+		if(g == null) { System.out.println("Graph is empty"); return false;}
+		
 		Collection<node_data> vertex = g.getV();
 		if(BFS(vertex)) { Collection<node_data> reverse_vertex = rev_collection(vertex.toArray());	return BFS(reverse_vertex);	}
 		return false;
@@ -242,11 +245,14 @@ public class Graph_Algo implements graph_algorithms{
 	 * @return shortest path between src & dest. 
 	 */
 	private ArrayList<node_data> Dijkstra(int src, int dest){
-
-		Collection<node_data> vertex = g.getV(); // getting all vertexes. 
+		
+		Collection<node_data> vertex = g.getV(); // getting all vertexes.
+		
+		dosecontain(src,dest,vertex);
+		
 		all_Zero(vertex); //sets tag to 0; )Unvisited; 
 		all_inf(vertex); // sets the path cost to 0; 
-
+		
 		node_data a = g.getNode(src); //getting the start node. 
 		a.setWeight(0); //set star node path cost to 0; 
 		int counter=0; //Counter usage for stopping condition counts vertexes; 
@@ -317,6 +323,8 @@ public class Graph_Algo implements graph_algorithms{
 	 */
 	@Override
 	public double shortestPathDist(int src, int dest) {	
+		
+		if(g == null) { System.out.println("Graph is empty"); return -1;}
 
 		List<node_data> temp = Dijkstra(src, dest);
 		if(temp == null ) {
@@ -350,10 +358,6 @@ public class Graph_Algo implements graph_algorithms{
 
 		return arr;
 	}
-
-
-
-
 	/**
 	 * 
 	 * Tsp: 
@@ -367,9 +371,12 @@ public class Graph_Algo implements graph_algorithms{
 	 */
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-
+		
+		if(targets==null) {System.out.println("No targets Entered..");return null;}
 		if(!checkPathOfTargets(targets)) {return null;}
-
+	
+		targets=removeDuplicates(targets); // removing Duplicates. 
+		
 		double min_path = Double.MAX_VALUE;
 
 		double min_path_temp =-1; //base 
@@ -462,7 +469,7 @@ public class Graph_Algo implements graph_algorithms{
 	 */
 	@Override
 	public graph copy() {
-
+		if(g==null) {return null;}
 		graph new_g = new DGraph();
 
 		Collection<node_data> v = g.getV();
@@ -488,7 +495,44 @@ public class Graph_Algo implements graph_algorithms{
 
 		return new_g;
 	}
+	 public ArrayList<Integer> removeDuplicates(List<Integer> list) 
+	    { 
+	  
+	        // Create a new ArrayList 
+	        ArrayList<Integer> newList = new ArrayList<Integer>(); 
+	  
+	        // Traverse through the first list 
+	        for (Integer element : list) { 
+	  
+	            // If this element is not present in newList 
+	            // then add it 
+	            if (!newList.contains(element)) { 
+	  
+	                newList.add(element); 
+	            } 
+	        } 
+	  
+	        // return the new list 
+	        return newList; 
+	    } 
 
+	 private boolean dosecontain(int src, int dest, Collection<node_data> vertex) {
+		
+		Iterator hit = vertex.iterator();
+		boolean a=false; boolean b=false; 
+		while (hit.hasNext())
+		{
+			node_data nd = (node_data) hit.next();
+			if(nd.getKey()==src) 	{a =true;}
+			if(nd.getKey()==dest) 	{b =true;}
+		}
+		 if(a == false || b==false)
+			 return false;
+		 
+		 else
+			 return true;
+		 
+	 }
 
 	//|--------------------------------------------------------------------------------------------------------------------------------|
 	//|----------------------------------------------------SUB-CLASS-------------------------------------------------------------------|
@@ -504,7 +548,7 @@ public class Graph_Algo implements graph_algorithms{
 	 * 
 	 */
 
-	private class MinHeap{
+ 	private class MinHeap{
 
 		////////////////////////////////////////////
 		//////////////    fields     ///////////////
