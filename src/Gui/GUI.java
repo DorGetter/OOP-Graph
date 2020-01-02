@@ -63,6 +63,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	static JButton submit1,submit2;
 	private static JFrame frame;
 	boolean isConnected=false;
+	double pathweight =-1;
 	List<node_data> path;
 	private int min_x = 500;
 	private int min_y = 500;
@@ -299,6 +300,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			g.fillOval(path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy(), 2,2);
 			g.setColor(Color.BLACK);
 			g.drawString("finish", path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy());	
+			if(pathweight>-1) {	g.drawString("Path Weight: "+pathweight, min_x-50, min_y-50);}pathweight=-1;
 		}
 
 
@@ -346,8 +348,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				g.drawString("finish", path.get(path.size()-1).getLocation().ix(),path.get(path.size()-1).getLocation().iy());
 			}
 		}
-
-		if(this.graph!=null) {	this.setSize(min_x+100,min_y+100);	}	
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -469,6 +469,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				graph_algorithms a = new Graph_Algo();
 				a.init(graph);
 				path =a.shortestPath(src,Dest);
+				pathweight = a.shortestPathDist(src, Dest);
 				if(path==null) {System.out.println("null");}
 				else {		action = 1;
 				repaint();}

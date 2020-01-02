@@ -74,34 +74,4 @@ class NodeVTest {
 		}
 	}
 
-	@Test
-	void testGetWeight() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetWeight() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetInfo() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetInfo() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetTag() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetTag() {
-		fail("Not yet implemented");
-	}
-
 }

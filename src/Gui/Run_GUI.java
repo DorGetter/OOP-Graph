@@ -54,10 +54,12 @@ public class Run_GUI {
 		 *	**	g.addNode - adding a vertex , g.connect - adding an edge 			**
 		 *	**************************************************************************
 		 *****************************************************************************/
-
+		
+		//g=ggg();
 		//set visibility: 
 		GUI wind = new GUI(g);						
 		wind.setVisible(true);
+		
 
 	}
 
@@ -144,6 +146,50 @@ public class Run_GUI {
 		ga.init(g);
 		return g;
 	}
+	
+	private static graph ggg() {
+		
+		DGraph graph = new DGraph();
+		Graph_Algo ga= new Graph_Algo();
+		node_data a = new NodeV(100,100);		node_data b =new NodeV(100,400);
+		node_data c =new NodeV(200,700);		node_data d =new NodeV(400,500);
+		node_data e =new NodeV(400,900);		node_data f =new NodeV(600,700);
+		node_data g =new NodeV(700,900);		node_data h =new NodeV(700,200);
+		node_data i =new NodeV(900,600);		node_data j =new NodeV(800,500);
+		
+		graph.addNode(a);
+		graph.addNode(b);
+		graph.addNode(c);
+		graph.addNode(d);
+		graph.addNode(e);
+		graph.addNode(f);
+		graph.addNode(g);
+		graph.addNode(h);
+		graph.addNode(i);
+		graph.addNode(j);
+		
 
+		graph.connect(a.getKey(),b.getKey(),4.0);
+		graph.connect(b.getKey(),c.getKey(),5.0);
+		graph.connect(a.getKey(),h.getKey(),50.0);
+		graph.connect(d.getKey(),a.getKey(),6.0);
+		graph.connect(d.getKey(),c.getKey(),50.0);
+		graph.connect(d.getKey(),f.getKey(),1.0);
+		graph.connect(e.getKey(),d.getKey(),4.0);
+		graph.connect(e.getKey(),g.getKey(),5.0);
+		graph.connect(f.getKey(),c.getKey(),50.0);
+		graph.connect(g.getKey(),f.getKey(),6.0);
+		graph.connect(h.getKey(),d.getKey(),50.0);
+		graph.connect(i.getKey(),j.getKey(),1.0);
+		graph.connect(j.getKey(),d.getKey(),4.0);
+		graph.connect(c.getKey(),i.getKey(),5.0);
+		graph.connect(j.getKey(),h.getKey(),5.0);
+		graph.connect(f.getKey(),e.getKey(),5.0);
+		
+		ga.init(graph);
+		return graph;
+		
+		
+	}
 
 }

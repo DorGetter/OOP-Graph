@@ -163,7 +163,7 @@ public class Graph_Algo implements graph_algorithms{
 	 * @param vertex collections of vertexes of the graph.
 	 * @return boolean , true: if all vertexes been visited, false otherwise;  
 	 */
-	public boolean BFS(Collection<node_data> vertex) {
+	private boolean BFS(Collection<node_data> vertex) {
 
 		Queue<node_data> q = new LinkedList<node_data>();
 		if(vertex.isEmpty()) {
@@ -339,7 +339,7 @@ public class Graph_Algo implements graph_algorithms{
 	 * which creating the shortest path between src --> dest extracting the weight & path.
 	 * @return the cost value (double) && the shortest path src --> dest    
 	 */
-	public Object [] shortestPath_Dist(int src, int dest) {
+	private Object [] shortestPath_Dist(int src, int dest) {
 
 		List<node_data> temp = Dijkstra(src, dest);
 		if(temp == null ) {
@@ -416,8 +416,12 @@ public class Graph_Algo implements graph_algorithms{
 	 */
 	private boolean checkPathOfTargets(List<Integer> targets) {
 		Collection<node_data> t_check = new ArrayList<node_data>();
-		for (int i = 0; i < targets.size(); i++) {t_check.add(this.g.getNode(targets.get(i))); }
-		
+		try {
+		for (int i = 0; i < targets.size(); i++) {
+			t_check.add(this.g.getNode(targets.get(i))); }
+		}catch (Exception e) {
+			return false;
+		}
 		if(BFS(t_check)) {return true;}
 		
 		return false;
@@ -431,7 +435,15 @@ public class Graph_Algo implements graph_algorithms{
 
 		int t1 = new Random().nextInt(targets.size()-1);
 		int t2 = new Random().nextInt(targets.size()-1);
-		if(t1==t2)
+		
+		
+		if(targets.size()==1) return targets;
+		else if(targets.size()==2) {
+			int temp = targets.get(0);
+			targets.set(0, targets.get(1));
+			targets.set(1,temp);
+		}
+		else if(t1==t2)
 		{
 			while(t1==t2)
 			{
@@ -458,6 +470,12 @@ public class Graph_Algo implements graph_algorithms{
 		while(v_it.hasNext()) {	
 			node_data new_v = (node_data)v_it.next();
 			new_g.addNode(new_v);
+
+		}
+		
+		
+		while(v_it.hasNext()) {	
+			node_data new_v = (node_data)v_it.next();
 
 			Collection<edge_data> e = g.getE(new_v.getKey());
 			Iterator e_it = e.iterator();
@@ -486,7 +504,7 @@ public class Graph_Algo implements graph_algorithms{
 	 * 
 	 */
 
-	public class MinHeap{
+	private class MinHeap{
 
 		////////////////////////////////////////////
 		//////////////    fields     ///////////////
