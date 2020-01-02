@@ -1,4 +1,4 @@
-package Gui;
+package gui;
 import algorithms.Graph_Algo;
 import algorithms.graph_algorithms;
 import java.awt.Graphics;

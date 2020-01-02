@@ -1,4 +1,4 @@
-package Gui;
+package gui;
 
 import java.util.Random;
 import algorithms.Graph_Algo;

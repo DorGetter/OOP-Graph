@@ -61,6 +61,11 @@ public class Graph_Algo implements graph_algorithms{
 	///////////////////     Constructor     /////////////////////////
 	/////////////////////////////////////////////////////////////////
 	public Graph_Algo() {}
+	
+	public Graph_Algo(graph g) {
+		this.g = g;
+	}
+	
 	@Override
 	public void init(graph g) {
 		this.g = g;	
