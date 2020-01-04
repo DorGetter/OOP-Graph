@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import elements.Edge;
@@ -23,7 +25,8 @@ import elements.NodeV;
  *
  */
 
-public class DGraph implements graph, Serializable{
+public class DGraph extends Observable  implements graph, Serializable {
+	
 
 	////////////////////////////////////////////
 	//////////////    fields     ///////////////
@@ -82,7 +85,8 @@ public class DGraph implements graph, Serializable{
 		else {
 			vertex.put(n.getKey(), n);
 		}
-
+		setChanged();
+		notifyObservers(n);
 		mc = n.getKey();
 	}
 	/**
@@ -102,10 +106,14 @@ public class DGraph implements graph, Serializable{
 			//if src vertex exist in edges hash , and no dest. 
 			else if(edges.containsKey(src)) {
 				edges.get(src).put(dest, new Edge(vertex.get(src),vertex.get(dest),w));
+				setChanged();
+				notifyObservers();
 			}
 			else {
 				edges.put(src, new HashMap<Integer, edge_data>());
 				edges.get(src).put(dest, new Edge(vertex.get(src),vertex.get(dest),w));
+				setChanged();
+				notifyObservers();
 			}
 
 		}
@@ -153,7 +161,9 @@ public class DGraph implements graph, Serializable{
 		remove_from_edges(key);
 		node_data removed = vertex.get(key);
 		vertex.remove(key);
-		//mc++;
+		setChanged();
+		notifyObservers();
+		
 		return removed;
 
 	}
@@ -187,7 +197,9 @@ public class DGraph implements graph, Serializable{
 		if(edges.containsKey(src)&& edges.get(src).containsKey(dest)) {
 			edge_data temp = edges.get(src).get(dest);
 			edges.get(src).remove(dest);
-			//mc++;
+			setChanged();
+			notifyObservers();
+			
 			return temp; 
 		}
 		return null;
@@ -228,5 +240,11 @@ public class DGraph implements graph, Serializable{
 	public int getMC() {
 		return mc;
 	}
+//	public void func1() 
+//    { 
+//        setChanged(); 
+//        System.out.println("Change status with setChanged :" + hasChanged()); 
+//       notifyObservers(); 
+//    } 
 
 }

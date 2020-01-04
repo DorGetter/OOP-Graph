@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -39,7 +41,7 @@ import elements.NodeV;
 import java.text.DecimalFormat;
 
 
-public class GUI extends JFrame implements ActionListener, MouseListener, Runnable {
+public class GUI extends JFrame implements ActionListener, MouseListener, Runnable, Observer {
 
 	private static final Graphics Graphics = null;
 	private static DecimalFormat df2 = new DecimalFormat("#.##");
@@ -77,6 +79,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, Runnab
 		this.vertex	= dg.getV();
 		this.graph = dg;
 		G.init(this.graph);
+		((Observable) graph).addObserver(this);
 	}
 
 	/////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -312,9 +315,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener, Runnab
 
 
 		if(action==3) {
+			System.out.println("1");
 			if(path!=null) {
+				System.out.println("2");
 				for (int i = 0; i < path.size()-1; i++)
 				{
+					System.out.println(i);
 					int j = i+1;
 					node_data s =path.get(i);
 					node_data f =path.get(j);
@@ -518,6 +524,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, Runnab
 
 				//copy the path for paint\\
 				path = a.TSP(targets);
+				System.out.println(path);
 				//set action;
 				action=3;
 				repaint();
@@ -706,6 +713,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, Runnab
 		repaint();
 		
 	}
+	@Override
+	public void update(Observable o, Object arg) {
+
+		repaint();
+		run();
+	}
+	
 
 
 

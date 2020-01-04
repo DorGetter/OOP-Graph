@@ -1,5 +1,8 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 import java.util.Random;
 import algorithms.Graph_Algo;
 import dataStructure.DGraph;
@@ -9,11 +12,12 @@ import elements.NodeV;
 
 public class Run_GUI {
 
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws InterruptedException {
+		
 		//creates the default graph. 
 		graph g = new DGraph(); 
-
+		Graph_Algo a = new Graph_Algo();
+		DGraph D = new DGraph();
 		
 		/*****************************************************************************
 		 * ***************************************************************************
@@ -48,9 +52,56 @@ public class Run_GUI {
 		 *****************************************************************************/
 		
 		//g=ggg();
+		
+		
 		//set visibility: 
-		GUI wind = new GUI(g);						
+		GUI wind = new GUI(g);
 		wind.setVisible(true);
+	
+		
+		
+		Thread.sleep(2000);
+		NodeV gg= new NodeV(200,200);
+		NodeV gg1= new NodeV(300,300);
+		NodeV gg2= new NodeV(400,400);
+		NodeV gg3= new NodeV(500,500);
+		NodeV gg4= new NodeV(600,600);
+		
+		g.addNode(gg1);
+		System.out.println("the first");
+		Thread.sleep(3000);
+		
+
+		Thread.sleep(3000);
+		g.addNode(gg1);
+		System.out.println("the second");
+
+		Thread.sleep(3000);
+		g.addNode(gg2);
+		System.out.println("the third");
+		Thread.sleep(3000);
+
+		Thread.sleep(3000);
+		g.addNode(gg3);
+		System.out.println("the fifth");
+
+		Thread.sleep(3000);
+		g.addNode(gg4);
+		System.out.println("the sixth");
+
+		Thread.sleep(3000);
+		Thread.sleep(3000);
+		Thread.sleep(3000);
+		g.connect(gg.getKey(), gg1.getKey(), 2);
+		Thread.sleep(3000);
+
+		g.connect(gg1.getKey(), gg2.getKey(), 2);
+		Thread.sleep(3000);
+
+		Thread.sleep(3000);
+		g.connect(gg2.getKey(), gg3.getKey(), 2);
+		
+		
 		
 	}
 
