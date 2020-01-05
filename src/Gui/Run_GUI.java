@@ -1,5 +1,6 @@
 package gui;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -40,8 +41,8 @@ public class Run_GUI {
 		 * ***************************************************************************
 		 *****************************************************************************/
 		
-		g=graphGenerator();
-		
+		//g=graphGenerator();
+		//g=graphGenerator2();
 
 		/*****************************************************************************
 		 * ***************************************************************************
@@ -51,57 +52,11 @@ public class Run_GUI {
 		 *	**************************************************************************
 		 *****************************************************************************/
 		
-		//g=ggg();
 		
 		
 		//set visibility: 
 		GUI wind = new GUI(g);
 		wind.setVisible(true);
-	
-		
-		
-		Thread.sleep(2000);
-		NodeV gg= new NodeV(200,200);
-		NodeV gg1= new NodeV(300,300);
-		NodeV gg2= new NodeV(400,400);
-		NodeV gg3= new NodeV(500,500);
-		NodeV gg4= new NodeV(600,600);
-		
-		g.addNode(gg1);
-		System.out.println("the first");
-		Thread.sleep(3000);
-		
-
-		Thread.sleep(3000);
-		g.addNode(gg1);
-		System.out.println("the second");
-
-		Thread.sleep(3000);
-		g.addNode(gg2);
-		System.out.println("the third");
-		Thread.sleep(3000);
-
-		Thread.sleep(3000);
-		g.addNode(gg3);
-		System.out.println("the fifth");
-
-		Thread.sleep(3000);
-		g.addNode(gg4);
-		System.out.println("the sixth");
-
-		Thread.sleep(3000);
-		Thread.sleep(3000);
-		Thread.sleep(3000);
-		g.connect(gg.getKey(), gg1.getKey(), 2);
-		Thread.sleep(3000);
-
-		g.connect(gg1.getKey(), gg2.getKey(), 2);
-		Thread.sleep(3000);
-
-		Thread.sleep(3000);
-		g.connect(gg2.getKey(), gg3.getKey(), 2);
-		
-		
 		
 	}
 
@@ -176,34 +131,51 @@ public class Run_GUI {
 		ga.init(g);		return g;
 	}
 	
-	private static graph ggg() {
+	private static graph graphGenerator2() {
 		
-		DGraph graph = new DGraph();
+		DGraph g = new DGraph();
 		Graph_Algo ga= new Graph_Algo();
-		node_data a = new NodeV(100,100);		node_data b =new NodeV(100,400);
-		node_data c =new NodeV(200,700) ;		node_data d =new NodeV(400,500);
-		node_data e =new NodeV(400,900) ;		node_data f =new NodeV(600,700);
-		node_data g =new NodeV(700,900) ;		node_data h =new NodeV(700,200);
-		node_data i =new NodeV(900,600) ;		node_data j =new NodeV(800,500);
+		int start =0,end=100;
 		
-		graph.addNode(a);						graph.addNode(b);
-		graph.addNode(c);						graph.addNode(d);
-		graph.addNode(e);						graph.addNode(f);
-		graph.addNode(g);						graph.addNode(h);
-		graph.addNode(i);						graph.addNode(j);
 		
+		
+		int 	random0 		= new Random().nextInt(800 + 70) +70;
+		int 	random1 		= new Random().nextInt(800 + 70) +70;
+		
+		//creates first vertex\\
+		NodeV nodetemp1 		= new NodeV(random0,random1);
+		
+		int key =nodetemp1.getKey();
+		
+		for (int i = 0; i < 10; i++) {
 
-		graph.connect(a.getKey(),b.getKey(),4.0);		graph.connect(b.getKey(),c.getKey(),5.0);
-		graph.connect(a.getKey(),h.getKey(),50.0);		graph.connect(d.getKey(),a.getKey(),6.0);
-		graph.connect(d.getKey(),c.getKey(),50.0);		graph.connect(d.getKey(),f.getKey(),1.0);
-		graph.connect(e.getKey(),d.getKey(),4.0);		graph.connect(e.getKey(),g.getKey(),5.0);
-		graph.connect(f.getKey(),c.getKey(),50.0);		graph.connect(g.getKey(),f.getKey(),6.0);
-		graph.connect(h.getKey(),d.getKey(),50.0);		graph.connect(i.getKey(),j.getKey(),1.0);
-		graph.connect(j.getKey(),d.getKey(),4.0);		graph.connect(c.getKey(),i.getKey(),5.0);
-		graph.connect(j.getKey(),h.getKey(),5.0);		graph.connect(f.getKey(),e.getKey(),5.0);
-		
-		ga.init(graph);		return graph;
-		
+			System.out.println(i);
+			//create random x,y,weight\\
+			int 	random2 		= new Random().nextInt(800 + 70) +70;
+			int 	random3 		= new Random().nextInt(800 + 70) +70;
+			double	random4 		= new Random().nextInt(50 + 1)   +1;
+			
+			NodeV nodetemp2 		= new NodeV(random2,random3);
+			NodeV nodetemp3 		= new NodeV(random3,random2);
+			
+			g.addNode(nodetemp2);
+			g.addNode(nodetemp3);
+			
+			//0 --> 1
+			g.connect(key				,nodetemp2.getKey(),random3);
+			//1 --> 0
+			g.connect(nodetemp2.getKey(),             	key,random3);
+			//1 --> 2
+			g.connect(nodetemp2.getKey(),nodetemp3.getKey(),random3);
+			//2 -->1
+			g.connect(nodetemp3.getKey(),nodetemp2.getKey(),random3);
+			
+			key=nodetemp3.getKey();
+			
+			
+		}
+		ga.init(g);
+		return g;
 		
 	}
 

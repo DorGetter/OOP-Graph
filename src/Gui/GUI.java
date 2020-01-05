@@ -315,12 +315,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, Runnab
 
 
 		if(action==3) {
-			System.out.println("1");
 			if(path!=null) {
-				System.out.println("2");
 				for (int i = 0; i < path.size()-1; i++)
 				{
-					System.out.println(i);
 					int j = i+1;
 					node_data s =path.get(i);
 					node_data f =path.get(j);
@@ -523,6 +520,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, Runnab
 				}
 
 				//copy the path for paint\\
+				path = null;
 				path = a.TSP(targets);
 				System.out.println(path);
 				//set action;

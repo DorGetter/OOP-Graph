@@ -177,7 +177,7 @@ public class Graph_Algo implements graph_algorithms{
 		if(vertex.isEmpty()) {
 			return false;
 		}
-		all_Zero(vertex); //set tag of vertexes to 0 (unvisited); 
+		all_Zero(g.getV()); //set tag of vertexes to 0 (unvisited); 
 		Iterator hit = vertex.iterator();
 		node_data a = (node_data) hit.next();
 		a.setTag(1); //sets the first vertex to visited.
@@ -185,7 +185,8 @@ public class Graph_Algo implements graph_algorithms{
 
 		while(!q.isEmpty()) {
 
-			node_data first_out = q.remove(); //dequeue the first in queue. 
+			node_data first_out = q.remove(); //dequeue the first in queue.
+			
 			Collection<edge_data> e = g.getE(first_out.getKey()); //getting all the neighboring.
 			if(e == null) {return false;} //if there are no edges coming out return false (indicates the graph cannot be connected).   
 			Iterator bgu = e.iterator();
@@ -378,6 +379,7 @@ public class Graph_Algo implements graph_algorithms{
 	public List<node_data> TSP(List<Integer> targets) {
 		
 		if(targets==null) {System.out.println("No targets Entered..");return null;}
+		targets=removeDuplicates(targets); // removing Duplicates.
 		if(!checkPathOfTargets(targets)) {return null;}
 	
 		targets=removeDuplicates(targets); // removing Duplicates. 
@@ -388,7 +390,7 @@ public class Graph_Algo implements graph_algorithms{
 		Object [] arr_temp; //will hold the path between ti-->ti+1 & cost.	 
 		ArrayList<node_data> arr = new ArrayList<node_data>();	//sum up the path between t1 ----> tn (if exists).
 		ArrayList<node_data> ans = new ArrayList<node_data>();  //will hold the shortest path. 
-		for (int i = 0; i < 68; i++) {  // how many checks. 
+		for (int i = 0; i < 64; i++) {  // how many checks. 
 			arr = new ArrayList<node_data>();
 			List<Integer> tmp = shuffleTargets(targets); //shuffle the targets list. 
 			min_path_temp =0;							//setting the min path temp to hold the current path cost; 
